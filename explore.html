@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Explore · Kidpreneur</title>
+  <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      font-family:"SF Pro Display",-apple-system,system-ui,Roboto,sans-serif;
+      color:#fff;overflow-x:hidden;background:#000;min-height:100vh;position:relative;
+    }
+
+    /* EXACT same background as index.html */
+    .bg{
+      position:fixed;top:0;left:0;width:100%;height:100%;z-index:-3;
+      background:radial-gradient(at 20% 30%, rgba(100,210,255,0.25), transparent 60%),
+                 radial-gradient(at 80% 20%, rgba(255,79,165,0.25), transparent 60%),
+                 radial-gradient(at 50% 80%, rgba(255,184,77,0.25), transparent 60%),
+                 #000;
+      background-size:200% 200%;
+      animation:moveGradient 30s ease-in-out infinite alternate;
+    }
+    @keyframes moveGradient {
+      0% { background-position:20% 30%, 80% 20%, 50% 80%; }
+      50% { background-position:40% 40%, 60% 30%, 55% 70%; }
+      100% { background-position:30% 25%, 70% 15%, 45% 85%; }
+    }
+
+    .particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;pointer-events:none;}
+
+    header{text-align:center;padding:80px 20px 50px;}
+    header h1{
+      font-size:3.5rem;font-weight:800;margin-bottom:15px;
+      background:linear-gradient(90deg,#64d2ff,#ff4fa5);
+      -webkit-background-clip:text;color:transparent;
+    }
+    header p{font-size:1.3rem;color:#ccc;line-height:1.6;max-width:850px;margin:0 auto;}
+
+    .grid{
+      max-width:1100px;margin:0 auto;padding:40px 25px 120px;
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:30px;
+    }
+    .card{
+      background:rgba(255,255,255,0.07);
+      border-radius:24px;
+      padding:30px;
+      backdrop-filter:blur(16px);
+      box-shadow:0 10px 25px rgba(0,0,0,0.6);
+      text-align:center;
+      transform:translateY(40px);
+      opacity:0;
+    }
+    .card img{width:90px;height:90px;margin-bottom:15px;filter:drop-shadow(0 0 6px rgba(0,0,0,0.6))}
+    .card h3{font-size:1.5rem;margin-bottom:12px;color:#fff;}
+    .card p{font-size:1rem;color:#bbb;}
+
+    .dock{
+      position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+      width:92%;max-width:700px;height:95px;
+      background:rgba(255,255,255,0.08);backdrop-filter:blur(25px);
+      border-radius:36px;
+      display:flex;justify-content:space-around;align-items:center;
+      box-shadow:0 18px 40px rgba(0,0,0,0.65);z-index:2;
+    }
+    .dock a img{width:54px;height:54px;border-radius:16px;transition:transform .25s;}
+    .dock a img:hover{transform:scale(1.2);}
+
+    footer{text-align:center;padding:50px 20px 140px;font-size:1rem;color:#aaa;}
+    @media(max-width:600px){
+      header h1{font-size:2.5rem;} header p{font-size:1rem;}
+      .card h3{font-size:1.2rem;} .card p{font-size:0.9rem;}
+    }
+  </style>
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="particles"></div>
+
+  <header>
+    <h1>Explore</h1>
+    <p>Discover workshops, challenges, and hands-on activities that spark curiosity and build real-world skills.</p>
+  </header>
+
+  <section class="grid">
+    <div class="card">
+      <img src="https://img.icons8.com/fluency/96/idea-sharing.png" alt="Workshops"/>
+      <h3>Workshops</h3>
+      <p>Interactive sessions on coding, design, robotics, and entrepreneurship. Learn by building, not just listening.</p>
+    </div>
+    <div class="card">
+      <img src="https://img.icons8.com/color/96/joystick.png" alt="Challenges"/>
+      <h3>Challenges</h3>
+      <p>Hackathons, pitch events, and design sprints to push your creativity and test your ideas under pressure.</p>
+    </div>
+    <div class="card">
+      <img src="https://img.icons8.com/color/96/microscope.png" alt="Innovation Labs"/>
+      <h3>Innovation Labs</h3>
+      <p>Spaces where ideas come alive. From 3D printers to IoT kits, everything you need to prototype bold solutions.</p>
+    </div>
+    <div class="card">
+      <img src="https://img.icons8.com/color/96/handshake.png" alt="Collaboration"/>
+      <h3>Collaboration</h3>
+      <p>Team up with peers across schools. Because some of the best ideas happen when different minds collide.</p>
+    </div>
+    <div class="card">
+      <img src="https://img.icons8.com/fluency/96/online-support.png" alt="Mentorship"/>
+      <h3>Mentorship</h3>
+      <p>Guidance from teachers, entrepreneurs, and tech experts. Learn the shortcuts they wish they knew earlier.</p>
+    </div>
+    <div class="card">
+      <img src="https://img.icons8.com/color/96/earth-planet.png" alt="Showcase"/>
+      <h3>Showcase</h3>
+      <p>Present your projects to the community, industry leaders, and even global platforms. Shine on stage.</p>
+    </div>
+  </section>
+
+  <div class="dock">
+    <a href="about.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/info.png" alt="About"></a>
+    <a href="index.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/home.png" alt="Explore (active)"></a>
+    <a href="ideas.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/light-on.png" alt="Ideas"></a>
+    <a href="gallery.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/image.png" alt="Gallery"></a>
+    <a href="inspiration.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/rocket.png" alt="Inspiration"></a>
+  </div>
+
+  <footer>© 2025 CodeAGS · Ashoka Group of Schools</footer>
+
+  <script>
+    // Particles (same as index.html)
+    const particles=document.querySelector('.particles');
+    for(let i=0;i<20;i++){
+      const p=document.createElement('div');
+      p.classList.add('particle');
+      const size=Math.random()*20+10;
+      p.style.width=size+'px';p.style.height=size+'px';
+      p.style.left=Math.random()*100+'%';p.style.top=Math.random()*100+'%';
+      p.style.background=`rgba(255,255,255,${Math.random()*0.12+0.05})`;
+      p.style.borderRadius="50%";p.style.position="absolute";p.style.filter="blur(6px)";
+      p.style.animation=`float ${Math.random()*30+30}s linear infinite`;
+      particles.appendChild(p);
+    }
+
+    // Animate cards
+    anime({
+      targets: '.card',
+      opacity:[0,1],
+      translateY:[40,0],
+      delay:anime.stagger(250,{start:500}),
+      duration:1200,
+      easing:'spring(1, 80, 12, 0)'
+    });
+  </script>
+</body>
+</html>
