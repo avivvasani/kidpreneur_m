@@ -1,121 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kidpreneur · CodeAGS</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     body{
-      font-family:'Poppins',sans-serif;
+      font-family:"SF Pro Display",-apple-system,system-ui,Roboto,sans-serif;
       background:#0d0d0d;
       color:#fff;
       overflow-x:hidden;
     }
+
     header{
       text-align:center;
-      padding:40px 20px;
+      padding:60px 20px 40px;
     }
     header h1{
-      font-size:2.2rem;
-      margin-bottom:10px;
+      font-size:3.5rem;
+      font-weight:800;
+      margin-bottom:15px;
+      background:linear-gradient(90deg,#64d2ff,#ff4fa5);
+      -webkit-background-clip:text;
+      color:transparent;
     }
     header p{
-      font-size:1rem;
-      color:#ccc;
+      font-size:1.4rem;
+      color:#bbb;
+      line-height:1.6;
     }
 
-    /* Navigation grid (cards like PC version) */
-    .nav-grid{
+    /* Bigger App grid */
+    .app-grid{
       display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-      gap:20px;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:35px;
+      padding:40px 25px 120px;
       max-width:1100px;
-      margin:30px auto;
-      padding:0 20px;
+      margin:0 auto;
     }
-    .nav-card{
-      background:#1a1a1a;
-      border-radius:16px;
-      padding:25px;
+    .app-icon{
+      background:rgba(255,255,255,0.07);
+      border-radius:30px;
+      backdrop-filter:blur(16px);
+      padding:40px 25px;
       text-align:center;
       cursor:pointer;
-      transition:.3s;
-      box-shadow:0 6px 14px rgba(0,0,0,.6);
+      transform:translateY(40px);
+      opacity:0;
+      box-shadow:0 12px 28px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
+      transition:transform .4s cubic-bezier(.2,.9,.2,1);
     }
-    .nav-card:hover{
-      transform:translateY(-6px);
-      background:#222;
+    .app-icon:hover{
+      transform:translateY(-8px) scale(1.05);
     }
-    .nav-card h3{
+    .app-icon img{
+      width:80px;
+      height:80px;
+      margin-bottom:18px;
+    }
+    .app-icon h3{
+      font-size:1.5rem;
       margin-bottom:10px;
-      font-size:1.2rem;
-      color:#64d2ff;
+      color:#fff;
+      font-weight:700;
     }
-    .nav-card p{
-      font-size:0.9rem;
+    .app-icon p{
+      font-size:1.1rem;
       color:#aaa;
+    }
+
+    /* iOS dock */
+    .dock{
+      position:fixed;
+      bottom:20px;
+      left:50%;
+      transform:translateX(-50%);
+      width:92%;
+      max-width:650px;
+      height:90px;
+      background:rgba(255,255,255,0.1);
+      backdrop-filter:blur(20px);
+      border-radius:34px;
+      display:flex;
+      justify-content:space-around;
+      align-items:center;
+      box-shadow:0 14px 30px rgba(0,0,0,0.55);
+    }
+    .dock a img{
+      width:50px;
+      height:50px;
+      border-radius:14px;
+      transition:transform .25s;
+    }
+    .dock a img:hover{
+      transform:scale(1.2);
     }
 
     footer{
       text-align:center;
-      padding:20px;
-      font-size:0.8rem;
+      padding:40px 20px 130px;
+      font-size:1rem;
       color:#777;
     }
 
-    /* Mobile adjustments */
-    @media (max-width:768px){
-      header h1{font-size:1.8rem;}
-      header p{font-size:0.9rem;}
-      .nav-card{padding:20px;}
-      .nav-card h3{font-size:1rem;}
-      .nav-card p{font-size:0.85rem;}
-    }
-
-    @media (max-width:480px){
-      header{padding:30px 15px;}
-      header h1{font-size:1.5rem;}
-      header p{font-size:0.85rem;}
-      .nav-grid{gap:15px;}
-      .nav-card{padding:18px;}
-      .nav-card h3{font-size:0.95rem;}
-      .nav-card p{font-size:0.8rem;}
+    /* Mobile tweaks */
+    @media(max-width:600px){
+      header h1{font-size:2.5rem;}
+      header p{font-size:1.1rem;}
+      .app-icon img{width:70px;height:70px;}
+      .app-icon h3{font-size:1.3rem;}
+      .app-icon p{font-size:1rem;}
+      .dock{height:80px;}
+      .dock a img{width:42px;height:42px;}
     }
   </style>
 </head>
 <body>
   <header>
     <h1>Kidpreneur</h1>
-    <p>Innovate. Build. Inspire.<br>Empowering students to dream, design, and deliver the future.</p>
+    <p>Think different. Build boldly.<br>Empowering the next generation of creators with CodeAGS & Ashoka Group of Schools.</p>
   </header>
 
-  <section class="nav-grid">
-    <a href="about.html" class="nav-card">
+  <section class="app-grid">
+    <a href="about.html" class="app-icon">
+      <img src="https://img.icons8.com/ios-filled/100/ffffff/info.png" alt="About">
       <h3>About</h3>
-      <p>Learn more about our vision, mission, and initiative.</p>
+      <p>Who we are & why Kidpreneur matters.</p>
     </a>
-    <a href="explore.html" class="nav-card">
+    <a href="explore.html" class="app-icon">
+      <img src="https://img.icons8.com/ios-filled/100/ffffff/compass.png" alt="Explore">
       <h3>Explore</h3>
-      <p>Discover workshops, programs, and events that inspire creativity.</p>
+      <p>Workshops, challenges, and deep dives.</p>
     </a>
-    <a href="gallery.html" class="nav-card">
+    <a href="gallery.html" class="app-icon">
+      <img src="https://img.icons8.com/ios-filled/100/ffffff/image.png" alt="Gallery">
       <h3>Gallery</h3>
-      <p>Catch glimpses of Kidpreneur moments and projects.</p>
+      <p>Snapshots of innovation in action.</p>
     </a>
-    <a href="ideas.html" class="nav-card">
+    <a href="ideas.html" class="app-icon">
+      <img src="https://img.icons8.com/ios-filled/100/ffffff/light-on.png" alt="Ideas">
       <h3>Ideas</h3>
-      <p>Share, collaborate, and bring innovative concepts to life.</p>
+      <p>Brainstorms that become startups.</p>
     </a>
-    <a href="inspiration.html" class="nav-card">
+    <a href="inspiration.html" class="app-icon">
+      <img src="https://img.icons8.com/ios-filled/100/ffffff/rocket.png" alt="Inspiration">
       <h3>Inspiration</h3>
-      <p>Get motivated with stories, mentors, and success journeys.</p>
+      <p>Stories, mentors, and future icons.</p>
     </a>
   </section>
 
-  <footer>
-    © 2025 CodeAGS · Ashoka Group of Schools
-  </footer>
+  <div class="dock">
+    <a href="about.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/info.png" alt="About"></a>
+    <a href="explore.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/compass.png" alt="Explore"></a>
+    <a href="ideas.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/light-on.png" alt="Ideas"></a>
+    <a href="gallery.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/image.png" alt="Gallery"></a>
+    <a href="inspiration.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/rocket.png" alt="Inspiration"></a>
+  </div>
+
+  <footer>© 2025 CodeAGS · Ashoka Group of Schools</footer>
+
+  <script>
+    // Animate grid icons in like iOS spring load
+    anime({
+      targets: '.app-icon',
+      opacity:[0,1],
+      translateY:[50,0],
+      delay:anime.stagger(200,{start:400}),
+      duration:1000,
+      easing:'spring(1, 80, 12, 0)'
+    });
+
+    // Subtle parallax for header
+    window.addEventListener('scroll', ()=>{
+      const y = window.scrollY * 0.25;
+      document.querySelector('header').style.transform = `translateY(${y}px)`;
+    });
+  </script>
 </body>
 </html>
