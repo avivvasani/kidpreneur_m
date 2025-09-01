@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kidpreneur · Gallery</title>
+  <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      font-family:"SF Pro Display",-apple-system,system-ui,Roboto,sans-serif;
+      color:#fff;
+      overflow-x:hidden;
+      position:relative;
+      min-height:100vh;
+      background:#000;
+    }
+
+    /* Same animated gradient bg */
+    .bg{
+      position:fixed;
+      top:0;left:0;
+      width:100%;height:100%;
+      z-index:-3;
+      background:radial-gradient(at 20% 30%, rgba(100,210,255,0.2), transparent 60%),
+                 radial-gradient(at 80% 20%, rgba(255,79,165,0.2), transparent 60%),
+                 radial-gradient(at 50% 80%, rgba(255,184,77,0.2), transparent 60%),
+                 #000;
+      background-size:200% 200%;
+      animation:moveGradient 30s ease-in-out infinite alternate;
+    }
+    @keyframes moveGradient{
+      0%{background-position:20% 30%,80% 20%,50% 80%;}
+      50%{background-position:40% 40%,60% 30%,55% 70%;}
+      100%{background-position:30% 25%,70% 15%,45% 85%;}
+    }
+
+    /* Floating particles */
+    .particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;pointer-events:none;overflow:hidden;}
+    .particle{position:absolute;border-radius:50%;filter:blur(6px);animation:float 40s linear infinite;}
+    @keyframes float{from{transform:translateY(110vh) scale(0.5);}to{transform:translateY(-10vh) scale(1.2);}}
+
+    header{text-align:center;padding:70px 20px 40px;position:relative;z-index:2;}
+    header h1{
+      font-size:3.8rem;font-weight:800;margin-bottom:15px;
+      background:linear-gradient(90deg,#64d2ff,#ff4fa5);
+      -webkit-background-clip:text;color:transparent;
+    }
+    header p{font-size:1.5rem;color:#ddd;line-height:1.6;}
+
+    /* Gallery grid */
+    .gallery{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:30px;
+      padding:40px 25px 140px;
+      max-width:1200px;
+      margin:0 auto;
+      position:relative;
+      z-index:2;
+    }
+    .card{
+      background:rgba(255,255,255,0.07);
+      border-radius:24px;
+      backdrop-filter:blur(18px);
+      padding:20px;
+      text-align:center;
+      cursor:pointer;
+      transform:translateY(50px);
+      opacity:0;
+      box-shadow:0 14px 30px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05);
+      transition:transform .4s cubic-bezier(.2,.9,.2,1);
+    }
+    .card:hover{transform:translateY(-10px) scale(1.05);}
+    .card img,.card video{max-width:100%;border-radius:16px;margin-bottom:14px;}
+    .card h3{font-size:1.3rem;margin-bottom:8px;color:#fff;font-weight:600;}
+    .card p{font-size:1rem;color:#bbb;}
+
+    /* Modal */
+    .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);justify-content:center;align-items:center;z-index:1000;}
+    .modal-content{max-width:90%;max-height:90%;border-radius:20px;overflow:hidden;}
+    .modal-content img,.modal-content video,.modal-content iframe{width:100%;height:auto;display:block;}
+    .close{position:absolute;top:20px;right:30px;font-size:2rem;color:#fff;cursor:pointer;}
+
+    /* Dock same as index */
+    .dock{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);width:92%;max-width:700px;height:95px;background:rgba(255,255,255,0.08);backdrop-filter:blur(25px);border-radius:36px;display:flex;justify-content:space-around;align-items:center;box-shadow:0 18px 40px rgba(0,0,0,0.65);z-index:2;}
+    .dock a img{width:54px;height:54px;border-radius:16px;transition:transform .25s;}
+    .dock a img:hover{transform:scale(1.2);}
+
+    footer{text-align:center;padding:50px 20px 140px;font-size:1rem;color:#aaa;position:relative;z-index:2;}
+
+    @media(max-width:600px){
+      header h1{font-size:2.6rem;}
+      header p{font-size:1.2rem;}
+      .card h3{font-size:1.1rem;}
+      .card p{font-size:0.9rem;}
+      .dock{height:80px;}
+      .dock a img{width:42px;height:42px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="particles">
+    <div class="particle" style="left:10%"></div>
+    <div class="particle" style="left:30%"></div>
+    <div class="particle" style="left:55%"></div>
+    <div class="particle" style="left:75%"></div>
+    <div class="particle" style="left:90%"></div>
+  </div>
+
+  <header>
+    <h1>Gallery</h1>
+    <p>A look at ideas and prototypes from Kidpreneur innovators.</p>
+  </header>
+
+  <section class="gallery" id="gallery"></section>
+
+  <!-- Modal -->
+  <div class="modal" id="modal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <div class="modal-content" id="modalContent"></div>
+  </div>
+
+  <div class="dock">
+    <a href="about.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/info.png" alt="About"></a>
+    <a href="explore.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/compass.png" alt="Explore"></a>
+    <a href="ideas.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/light-on.png" alt="Ideas"></a>
+    <a href="index.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/home.png" alt="Home"></a>
+    <a href="inspiration.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/rocket.png" alt="Inspiration"></a>
+  </div>
+
+  <footer>© 2025 CodeAGS · Ashoka Group of Schools</footer>
+
+  <script>
+    const demoIdeas = [
+      {type:"image",src:"https://picsum.photos/400/250?random=1",title:"EcoBottle",desc:"Reusable bottles from recycled wastes."},
+      {type:"video",src:"https://www.w3schools.com/html/mov_bbb.mp4",title:"Smart Helmet",desc:"Helmet with built-in safety instruments."},
+      {type:"image",src:"https://picsum.photos/400/250?random=2",title:"Solar Backpack",desc:"Bag that charges devices with solar energy."},
+      {type:"image",src:"https://picsum.photos/400/250?random=3",title:"AI Tutor",desc:"AI-powered personal teaching."},
+      {type:"ppt",src:"#",title:"Green City",desc:"Urban sustainability cities which last."}
+    ];
+
+    function createCard(item){
+      const card=document.createElement("div");
+      card.className="card";
+      if(item.type==="image"){
+        card.innerHTML=`<img src="${item.src}" alt=""><h3>${item.title}</h3><p>${item.desc}</p>`;
+        card.onclick=()=>openModal(`<img src="${item.src}" alt="">`);
+      }else if(item.type==="video"){
+        card.innerHTML=`<video src="${item.src}" muted autoplay loop></video><h3>${item.title}</h3><p>${item.desc}</p>`;
+        card.onclick=()=>openModal(`<video src="${item.src}" controls autoplay></video>`);
+      }else{
+        card.innerHTML=`<div style="width:100%;height:150px;background:#444;border-radius:12px;display:flex;align-items:center;justify-content:center;">📑</div><h3>${item.title}</h3><p>${item.desc}</p>`;
+        card.onclick=()=>openModal(`<iframe src="${item.src}" width="800" height="600"></iframe>`);
+      }
+      return card;
+    }
+
+    function loadGallery(){
+      const gallery=document.getElementById("gallery");
+      demoIdeas.forEach(item=>gallery.appendChild(createCard(item)));
+      anime({
+        targets:'.card',
+        opacity:[0,1],
+        translateY:[60,0],
+        delay:anime.stagger(200,{start:500}),
+        duration:1200,
+        easing:'spring(1,80,12,0)'
+      });
+    }
+
+    function openModal(content){
+      document.getElementById("modalContent").innerHTML=content;
+      document.getElementById("modal").style.display="flex";
+    }
+    function closeModal(){
+      document.getElementById("modal").style.display="none";
+      document.getElementById("modalContent").innerHTML="";
+    }
+
+    // parallax header
+    window.addEventListener('scroll',()=>{
+      const y=window.scrollY*0.25;
+      document.querySelector('header').style.transform=`translateY(${y}px)`;
+    });
+
+    // randomize particles
+    document.querySelectorAll('.particle').forEach(p=>{
+      const size=Math.random()*20+10;
+      p.style.width=size+'px';
+      p.style.height=size+'px';
+      p.style.animationDuration=(Math.random()*30+30)+'s';
+      p.style.background=`rgba(255,255,255,${Math.random()*0.12+0.05})`;
+    });
+
+    loadGallery();
+  </script>
+</body>
+</html>
