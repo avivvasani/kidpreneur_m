@@ -9,157 +9,113 @@
     *{margin:0;padding:0;box-sizing:border-box}
     body{
       font-family:'Poppins',sans-serif;
-      background:#f9f9f9;
-      color:#111;
-      overflow:hidden;
+      background:#0d0d0d;
+      color:#fff;
+      overflow-x:hidden;
+    }
+    header{
+      text-align:center;
+      padding:40px 20px;
+    }
+    header h1{
+      font-size:2.2rem;
+      margin-bottom:10px;
+    }
+    header p{
+      font-size:1rem;
+      color:#ccc;
     }
 
-    /* Pages container */
-    .app-container{
-      position:relative;
-      width:100%;
-      height:100vh;
-      overflow:hidden;
+    /* Navigation grid (cards like PC version) */
+    .nav-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:20px;
+      max-width:1100px;
+      margin:30px auto;
+      padding:0 20px;
     }
-
-    .page{
-      position:absolute;
-      top:0;left:100%;
-      width:100%;height:100%;
-      background:#fff;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      padding:20px;
-      transition:all .5s cubic-bezier(0.25,1,0.5,1);
-    }
-    .page.active{
-      left:0;
-    }
-    .page.exit-left{left:-100%}
-
-    .page h1{font-size:32px;margin-bottom:15px}
-    .page p{font-size:16px;max-width:500px;text-align:center;color:#444}
-
-    /* Tab bar */
-    .tabbar{
-      position:fixed;
-      bottom:0;left:0;right:0;
-      height:70px;
-      background:rgba(255,255,255,0.8);
-      backdrop-filter:blur(20px);
-      display:flex;
-      border-top:1px solid rgba(0,0,0,.1);
-    }
-    .tab{
-      flex:1;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      font-size:12px;
-      color:#555;
+    .nav-card{
+      background:#1a1a1a;
+      border-radius:16px;
+      padding:25px;
+      text-align:center;
       cursor:pointer;
       transition:.3s;
+      box-shadow:0 6px 14px rgba(0,0,0,.6);
     }
-    .tab svg{width:22px;height:22px;margin-bottom:4px}
-    .tab.active{color:#007aff}
+    .nav-card:hover{
+      transform:translateY(-6px);
+      background:#222;
+    }
+    .nav-card h3{
+      margin-bottom:10px;
+      font-size:1.2rem;
+      color:#64d2ff;
+    }
+    .nav-card p{
+      font-size:0.9rem;
+      color:#aaa;
+    }
+
+    footer{
+      text-align:center;
+      padding:20px;
+      font-size:0.8rem;
+      color:#777;
+    }
+
+    /* Mobile adjustments */
+    @media (max-width:768px){
+      header h1{font-size:1.8rem;}
+      header p{font-size:0.9rem;}
+      .nav-card{padding:20px;}
+      .nav-card h3{font-size:1rem;}
+      .nav-card p{font-size:0.85rem;}
+    }
+
+    @media (max-width:480px){
+      header{padding:30px 15px;}
+      header h1{font-size:1.5rem;}
+      header p{font-size:0.85rem;}
+      .nav-grid{gap:15px;}
+      .nav-card{padding:18px;}
+      .nav-card h3{font-size:0.95rem;}
+      .nav-card p{font-size:0.8rem;}
+    }
   </style>
 </head>
 <body>
-  <div class="app-container">
-    <!-- Home -->
-    <div class="page active" id="home">
-      <h1>Kidpreneur</h1>
-      <p>Innovate. Build. Inspire.<br>Empowering students to dream, design, and deliver the future.</p>
-    </div>
+  <header>
+    <h1>Kidpreneur</h1>
+    <p>Innovate. Build. Inspire.<br>Empowering students to dream, design, and deliver the future.</p>
+  </header>
 
-    <!-- About -->
-    <div class="page" id="about">
-      <h1>About</h1>
-      <p>Kidpreneur is an initiative by CodeAGS that nurtures creativity, innovation, and entrepreneurial skills in students.</p>
-    </div>
+  <section class="nav-grid">
+    <a href="about.html" class="nav-card">
+      <h3>About</h3>
+      <p>Learn more about our vision, mission, and initiative.</p>
+    </a>
+    <a href="explore.html" class="nav-card">
+      <h3>Explore</h3>
+      <p>Discover workshops, programs, and events that inspire creativity.</p>
+    </a>
+    <a href="gallery.html" class="nav-card">
+      <h3>Gallery</h3>
+      <p>Catch glimpses of Kidpreneur moments and projects.</p>
+    </a>
+    <a href="ideas.html" class="nav-card">
+      <h3>Ideas</h3>
+      <p>Share, collaborate, and bring innovative concepts to life.</p>
+    </a>
+    <a href="inspiration.html" class="nav-card">
+      <h3>Inspiration</h3>
+      <p>Get motivated with stories, mentors, and success journeys.</p>
+    </a>
+  </section>
 
-    <!-- Explore -->
-    <div class="page" id="explore">
-      <h1>Explore</h1>
-      <p>Discover workshops, activities, and hands-on sessions that inspire curiosity and problem solving.</p>
-    </div>
-
-    <!-- Gallery -->
-    <div class="page" id="gallery">
-      <h1>Gallery</h1>
-      <p>A glimpse of our events, projects, and the vibrant Kidpreneur community.</p>
-    </div>
-
-    <!-- Ideas -->
-    <div class="page" id="ideas">
-      <h1>Ideas</h1>
-      <p>Students share and grow their ideas, transforming imagination into innovation.</p>
-    </div>
-
-    <!-- Inspiration -->
-    <div class="page" id="inspiration">
-      <h1>Inspiration</h1>
-      <p>Stories, mentors, and journeys that motivate our young innovators to achieve greatness.</p>
-    </div>
-  </div>
-
-  <!-- iOS-like Tab Bar -->
-  <div class="tabbar">
-    <div class="tab active" data-target="home">
-      <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 9.75L12 3l9 6.75V21a.75.75 0 0 1-.75.75h-6.75V15h-3v6.75H3.75A.75.75 0 0 1 3 21V9.75Z"/></svg>
-      Home
-    </div>
-    <div class="tab" data-target="about">
-      <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10.01 10.01 0 0 0 12 2Zm0 4a1.25 1.25 0 1 1-1.25 1.25A1.25 1.25 0 0 1 12 6Zm1.5 12h-3v-1.5h1.5v-4.5H10.5V11h3Z"/></svg>
-      About
-    </div>
-    <div class="tab" data-target="explore">
-      <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2 3.5 20.29l.22.21H20.3l.2-.21Zm0 4.6 5.25 11.65h-10.5Z"/></svg>
-      Explore
-    </div>
-    <div class="tab" data-target="gallery">
-      <svg fill="currentColor" viewBox="0 0 24 24"><path d="M21 19V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2Zm-5-11a2 2 0 1 1-2-2 2 2 0 0 1 2 2ZM5 19l3.5-4.5 2.5 3 3.5-4.5L19 19Z"/></svg>
-      Gallery
-    </div>
-    <div class="tab" data-target="ideas">
-      <svg fill="currentColor" viewBox="0 0 24 24"><path d="M9 21h6v-1H9v1Zm3-19a7 7 0 0 0-4 12.74V18a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3.26A7 7 0 0 0 12 2Z"/></svg>
-      Ideas
-    </div>
-    <div class="tab" data-target="inspiration">
-      <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a9.93 9.93 0 0 0-7.07 2.93A10 10 0 1 0 19.07 4.93 9.93 9.93 0 0 0 12 2Zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8Z"/></svg>
-      Inspiration
-    </div>
-  </div>
-
-  <script>
-    const tabs=document.querySelectorAll('.tab');
-    const pages=document.querySelectorAll('.page');
-    let active="home";
-
-    tabs.forEach(tab=>{
-      tab.addEventListener('click',()=>{
-        const target=tab.getAttribute('data-target');
-        if(target===active) return;
-        // Animate old page left
-        const oldPage=document.getElementById(active);
-        oldPage.classList.remove('active');
-        oldPage.classList.add('exit-left');
-        setTimeout(()=>oldPage.classList.remove('exit-left'),500);
-
-        // Animate new page in
-        const newPage=document.getElementById(target);
-        newPage.classList.add('active');
-
-        // Update tabbar active
-        tabs.forEach(t=>t.classList.remove('active'));
-        tab.classList.add('active');
-
-        active=target;
-      });
-    });
-  </script>
+  <footer>
+    © 2025 CodeAGS · Ashoka Group of Schools
+  </footer>
 </body>
 </html>
