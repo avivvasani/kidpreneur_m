@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kidpreneur · Inspiration</title>
+  <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      font-family:"SF Pro Display",-apple-system,system-ui,Roboto,sans-serif;
+      color:#fff;
+      overflow-x:hidden;
+      position:relative;
+      min-height:100vh;
+      background:#000;
+    }
+
+    /* Background same as index */
+    .bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-3;
+      background:radial-gradient(at 20% 30%, rgba(100,210,255,0.2), transparent 60%),
+                 radial-gradient(at 80% 20%, rgba(255,79,165,0.2), transparent 60%),
+                 radial-gradient(at 50% 80%, rgba(255,184,77,0.2), transparent 60%),
+                 #000;
+      background-size:200% 200%;
+      animation:moveGradient 30s ease-in-out infinite alternate;}
+    @keyframes moveGradient{0%{background-position:20% 30%,80% 20%,50% 80%;}
+      50%{background-position:40% 40%,60% 30%,55% 70%;}
+      100%{background-position:30% 25%,70% 15%,45% 85%;}}
+
+    .particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;pointer-events:none;overflow:hidden;}
+    .particle{position:absolute;border-radius:50%;filter:blur(6px);animation:float 40s linear infinite;}
+    @keyframes float{from{transform:translateY(110vh) scale(0.5);}to{transform:translateY(-10vh) scale(1.2);}}
+
+    header{text-align:center;padding:70px 20px 40px;position:relative;z-index:2;}
+    header h1{font-size:3.8rem;font-weight:800;margin-bottom:15px;
+      background:linear-gradient(90deg,#64d2ff,#ff4fa5);-webkit-background-clip:text;color:transparent;}
+    header p{font-size:1.5rem;color:#ddd;line-height:1.6;}
+
+    /* Timeline */
+    .timeline{position:relative;max-width:900px;margin:0 auto;padding:40px 20px 160px;z-index:2;}
+    .timeline::after{content:'';position:absolute;left:50%;top:0;bottom:0;width:4px;background:rgba(255,255,255,0.15);transform:translateX(-50%);}
+    .entry{position:relative;width:50%;padding:20px 40px;box-sizing:border-box;}
+    .entry.left{left:0;}
+    .entry.right{left:50%;}
+    .entry .content{
+      background:rgba(255,255,255,0.08);
+      backdrop-filter:blur(20px);
+      border-radius:20px;
+      padding:20px;
+      box-shadow:0 8px 20px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.05);
+      opacity:0;transform:translateY(50px);
+    }
+    .entry h3{margin:0 0 10px;font-size:1.5rem;font-weight:700;}
+    .entry p{margin:0;color:#ccc;line-height:1.4;}
+    .entry::before{
+      content:'';position:absolute;top:30px;width:20px;height:20px;border-radius:50%;
+      background:linear-gradient(135deg,#64d2ff,#ff4fa5);z-index:1;}
+    .entry.left::before{right:-10px;}
+    .entry.right::before{left:-10px;}
+
+    .dock{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);width:92%;max-width:700px;height:95px;background:rgba(255,255,255,0.08);backdrop-filter:blur(25px);border-radius:36px;display:flex;justify-content:space-around;align-items:center;box-shadow:0 18px 40px rgba(0,0,0,0.65);z-index:2;}
+    .dock a img{width:54px;height:54px;border-radius:16px;transition:transform .25s;}
+    .dock a img:hover{transform:scale(1.2);}
+
+    footer{text-align:center;padding:50px 20px 140px;font-size:1rem;color:#aaa;position:relative;z-index:2;}
+
+    @media(max-width:768px){
+      .timeline::after{left:8px;}
+      .entry{width:100%;padding-left:30px;margin-bottom:40px;}
+      .entry.right{left:0;}
+      .entry.left::before,.entry.right::before{left:-2px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="particles">
+    <div class="particle" style="left:10%"></div>
+    <div class="particle" style="left:30%"></div>
+    <div class="particle" style="left:55%"></div>
+    <div class="particle" style="left:75%"></div>
+    <div class="particle" style="left:90%"></div>
+  </div>
+
+  <header>
+    <h1>Inspiration</h1>
+    <p>Milestones of CodeAGS, Ashoka Group of Schools, and our bright student innovators.</p>
+  </header>
+
+  <section class="timeline">
+    <div class="entry left">
+      <div class="content">
+        <h3>2015 · CodeAGS Founded</h3>
+        <p>A vision to nurture young minds in technology and entrepreneurship began here.</p>
+      </div>
+    </div>
+    <div class="entry right">
+      <div class="content">
+        <h3>2018 · Partnership with Ashoka Schools</h3>
+        <p>Launched Kidpreneur program to empower students to turn ideas into impact.</p>
+      </div>
+    </div>
+    <div class="entry left">
+      <div class="content">
+        <h3>2020 · 500+ Student Startups</h3>
+        <p>From eco-projects to AI tools, our students showcased remarkable innovation.</p>
+      </div>
+    </div>
+    <div class="entry right">
+      <div class="content">
+        <h3>2022 · National Recognition</h3>
+        <p>Kidpreneur featured as one of India’s leading student entrepreneurship programs.</p>
+      </div>
+    </div>
+    <div class="entry left">
+      <div class="content">
+        <h3>2024 · Global Collaborations</h3>
+        <p>Partnered with international mentors and tech leaders to guide young entrepreneurs.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="dock">
+    <a href="about.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/info.png" alt="About"></a>
+    <a href="explore.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/compass.png" alt="Explore"></a>
+    <a href="ideas.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/light-on.png" alt="Ideas"></a>
+    <a href="gallery.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/image.png" alt="Gallery"></a>
+    <a href="index.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/home.png" alt="Home"></a>
+  </div>
+
+  <footer>© 2025 CodeAGS · Ashoka Group of Schools</footer>
+
+  <script>
+    // Animate timeline entries on scroll
+    const entries=document.querySelectorAll('.entry .content');
+    function revealOnScroll(){
+      const trigger=window.innerHeight*0.9;
+      entries.forEach(el=>{
+        const rect=el.getBoundingClientRect();
+        if(rect.top<trigger){
+          anime({targets:el,opacity:[0,1],translateY:[50,0],duration:1200,easing:'spring(1,80,12,0)'});
+        }
+      });
+    }
+    window.addEventListener('scroll',revealOnScroll);
+    revealOnScroll();
+
+    // Randomize particle positions
+    document.querySelectorAll('.particle').forEach(p=>{
+      const size=Math.random()*20+10;
+      p.style.width=size+'px';p.style.height=size+'px';
+      p.style.animationDuration=(Math.random()*30+30)+'s';
+      p.style.background=`rgba(255,255,255,${Math.random()*0.12+0.05})`;
+    });
+  </script>
+</body>
+</html>
