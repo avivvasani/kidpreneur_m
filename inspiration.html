@@ -7,153 +7,235 @@
   <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
   <style>
+    /* ========== RESET ========== */
     *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%}
     body{
-      font-family:"SF Pro Display",-apple-system,system-ui,Roboto,sans-serif;
-      color:#fff;
+      font-family:"SF Pro Display",-apple-system,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      background:#0b0f14; /* deep, PC-like */
+      color:#e6e6e6;
       overflow-x:hidden;
+    }
+
+    /* ========== THEME TOKENS (PC PALETTE) ========== */
+    :root{
+      --bg:#0b0f14;
+      --panel:#10151c;
+      --panel-2:#0f141a;
+      --muted:#9aa4af;
+      --line:#1c2530;
+      --ring:rgba(14,165,255,.25);
+
+      --blue:#0ea5ff;             /* primary CTA */
+      --blue-2:#3b82f6;
+      --cyan:#22d3ee;
+      --purple:#a78bfa;
+      --pink:#f472b6;
+      --yellow:#fbbf24;
+      --green:#34d399;
+    }
+
+    /* ========== BACKGROUND AURAS (SUBTLE, NOT NEON) ========== */
+    .bg-auras{
+      position:fixed; inset:0; z-index:-2;
+      background:
+        radial-gradient(800px 500px at 15% 15%, rgba(14,165,255,.10), transparent 60%),
+        radial-gradient(700px 400px at 85% 25%, rgba(167,139,250,.09), transparent 65%),
+        radial-gradient(700px 400px at 50% 85%, rgba(52,211,153,.07), transparent 60%),
+        var(--bg);
+      filter:saturate(110%);
+    }
+    .grain{
+      position:fixed; inset:0; z-index:-1; opacity:.06; pointer-events:none;
+      background-image:linear-gradient(transparent 0, rgba(255,255,255,.1) 100%);
+      mix-blend-mode:overlay;
+    }
+
+    /* ========== LAYOUT ========== */
+    .wrap{max-width:1040px;margin:0 auto;padding:28px 18px 120px}
+
+    header.hero{
+      margin-top:10px; margin-bottom:22px;
+      text-align:center;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:.78rem; color:#cfeaff; background:rgba(14,165,255,.15);
+      border:1px solid rgba(14,165,255,.25); padding:6px 10px; border-radius:999px;
+      box-shadow:0 0 0 8px rgba(14,165,255,.04) inset;
+    }
+    .hero h1{
+      font-size:3.8rem;
+      font-weight:800;
+      margin-top:14px;
+      background:linear-gradient(90deg,#64d2ff,#ff4fa5);
+      -webkit-background-clip:text;
+      color:transparent;
+    }
+    .hero p{
+      margin-top:10px; color:var(--muted); font-size:1.05rem; line-height:1.6;
+    }
+
+    /* ========== CHIPS ROW (like PC quick pills) ========== */
+    .chips{
+      display:flex; gap:10px; flex-wrap:wrap; margin:18px 0 8px;
+    }
+    .chip{
+      --c: var(--blue);
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px; border-radius:999px; border:1px solid rgba(255,255,255,.06);
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      box-shadow:0 6px 18px rgba(0,0,0,.35), 0 0 0 6px rgba(255,255,255,.015) inset;
+      font-weight:600; font-size:.9rem; color:#eaf6ff;
+    }
+    .dot{width:8px;height:8px;border-radius:50%;background:var(--c);box-shadow:0 0 8px var(--c)}
+
+    /* ========== PANEL / CARD ========== */
+    .card{
       position:relative;
-      min-height:100vh;
-      background:#000;
+      background:linear-gradient(180deg, var(--panel), var(--panel-2));
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:22px;
+      box-shadow:
+        0 18px 40px rgba(0,0,0,.5),
+        0 1px 0 rgba(255,255,255,.03) inset;
+      transform:translateY(28px); opacity:0;
+    }
+    .card::after{ /* glow ring */
+      content:""; position:absolute; inset:-1px; border-radius:inherit;
+      pointer-events:none;
+      box-shadow:0 0 0 1px rgba(255,255,255,.02) inset, 0 0 0 10px var(--ring);
+      opacity:.0; transition:opacity .35s ease;
+    }
+    .card:hover::after{opacity:.3}
+
+    .grid{
+      display:grid; gap:18px; margin-top:14px;
     }
 
-    /* Background same as index */
-    .bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-3;
-      background:radial-gradient(at 20% 30%, rgba(100,210,255,0.2), transparent 60%),
-                 radial-gradient(at 80% 20%, rgba(255,79,165,0.2), transparent 60%),
-                 radial-gradient(at 50% 80%, rgba(255,184,77,0.2), transparent 60%),
-                 #000;
-      background-size:200% 200%;
-      animation:moveGradient 30s ease-in-out infinite alternate;}
-    @keyframes moveGradient{0%{background-position:20% 30%,80% 20%,50% 80%;}
-      50%{background-position:40% 40%,60% 30%,55% 70%;}
-      100%{background-position:30% 25%,70% 15%,45% 85%;}}
-
-    .particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;pointer-events:none;overflow:hidden;}
-    .particle{position:absolute;border-radius:50%;filter:blur(6px);animation:float 40s linear infinite;}
-    @keyframes float{from{transform:translateY(110vh) scale(0.5);}to{transform:translateY(-10vh) scale(1.2);}}
-
-    header{text-align:center;padding:70px 20px 40px;position:relative;z-index:2;}
-    header h1{font-size:3.8rem;font-weight:800;margin-bottom:15px;
-      background:linear-gradient(90deg,#64d2ff,#ff4fa5);-webkit-background-clip:text;color:transparent;}
-    header p{font-size:1.5rem;color:#ddd;line-height:1.6;}
-
-    /* Timeline */
-    .timeline{position:relative;max-width:900px;margin:0 auto;padding:40px 20px 160px;z-index:2;}
-    .timeline::after{content:'';position:absolute;left:50%;top:0;bottom:0;width:4px;background:rgba(255,255,255,0.15);transform:translateX(-50%);}
-    .entry{position:relative;width:50%;padding:20px 40px;box-sizing:border-box;}
-    .entry.left{left:0;}
-    .entry.right{left:50%;}
-    .entry .content{
-      background:rgba(255,255,255,0.08);
-      backdrop-filter:blur(20px);
-      border-radius:20px;
-      padding:20px;
-      box-shadow:0 8px 20px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.05);
-      opacity:0;transform:translateY(50px);
+    .card h2{font-size:1.28rem; font-weight:800; color:#f5f7fb; margin-bottom:8px}
+    .card p{color:#b9c3cc; line-height:1.65}
+    .card img {max-width:100%;border-radius:16px;margin-top:16px;}
+    .cards{
+        flex:1;
+        display:flex;
+        flex-direction:column;
+        gap:20px;
+        padding:20px;
     }
-    .entry h3{margin:0 0 10px;font-size:1.5rem;font-weight:700;}
-    .entry p{margin:0;color:#ccc;line-height:1.4;}
-    .entry::before{
-      content:'';position:absolute;top:30px;width:20px;height:20px;border-radius:50%;
-      background:linear-gradient(135deg,#64d2ff,#ff4fa5);z-index:1;}
-    .entry.left::before{right:-10px;}
-    .entry.right::before{left:-10px;}
-
-    .dock{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);width:92%;max-width:700px;height:95px;background:rgba(255,255,255,0.08);backdrop-filter:blur(25px);border-radius:36px;display:flex;justify-content:space-around;align-items:center;box-shadow:0 18px 40px rgba(0,0,0,0.65);z-index:2;}
-    .dock a img{width:54px;height:54px;border-radius:16px;transition:transform .25s;}
-    .dock a img:hover{transform:scale(1.2);}
-
-    footer{text-align:center;padding:50px 20px 140px;font-size:1rem;color:#aaa;position:relative;z-index:2;}
-
-    @media(max-width:768px){
-      .timeline::after{left:8px;}
-      .entry{width:100%;padding-left:30px;margin-bottom:40px;}
-      .entry.right{left:0;}
-      .entry.left::before,.entry.right::before{left:-2px;}
+    .stats{
+      display:flex; justify-content:space-around; margin-top:18px;
+      background:linear-gradient(180deg, #0d1218, #0e151c);
+      border:1px solid var(--line); border-radius:18px; padding:14px;
     }
+    .stat{text-align:center;padding:14px;display:flex;flex-direction:column;align-items:center;gap:6px;}
+    .stat h3{font-size:1.6rem;font-weight:700;color:#eaf2ff;}
+    .stat p{font-size:0.9rem;color:#9fb0bf;}
+
+    /* ========== DOCK (bottom nav, rounded) ========== */
+    .dock{
+      position:fixed; left:50%; bottom:16px; transform:translateX(-50%);
+      width:min(760px,92%); height:74px; z-index:50;
+      background:linear-gradient(180deg, #0e141b, #0c1117);
+      border:1px solid var(--line); border-radius:22px;
+      box-shadow:0 18px 48px rgba(0,0,0,.6);
+      display:flex; justify-content:space-around; align-items:center;
+    }
+    .dock a{
+      display:flex; flex-direction:column; align-items:center;
+      gap:6px; text-decoration:none;
+      color:#9fb0bf; font-size:.72rem;
+    }
+    .dock a.active{color:#eaf6ff}
+    .dock svg{width:20px;height:20px}
+    .dock img{width:54px; height:54px; border-radius:16px;}
   </style>
 </head>
 <body>
-  <div class="bg"></div>
-  <div class="particles">
-    <div class="particle" style="left:10%"></div>
-    <div class="particle" style="left:30%"></div>
-    <div class="particle" style="left:55%"></div>
-    <div class="particle" style="left:75%"></div>
-    <div class="particle" style="left:90%"></div>
-  </div>
 
-  <header>
+<div class="bg-auras"></div>
+<div class="grain"></div>
+
+<main class="wrap">
+  <header class="hero">
     <h1>Inspiration</h1>
-    <p>Milestones of CodeAGS, Ashoka Group of Schools, and our bright student innovators.</p>
+    <p>Stories of young entrepreneurs, inspiring projects, and our vision for the future.</p>
   </header>
 
-  <section class="timeline">
-    <div class="entry left">
-      <div class="content">
-        <h3>2015 · CodeAGS Founded</h3>
-        <p>A vision to nurture young minds in technology and entrepreneurship began here.</p>
-      </div>
+  <section class="cards">
+    <div class="card">
+      <h2>Student Success Stories</h2>
+      <p>Hear from young innovators whose ventures took off. From coding their first app to winning national awards, our student ventures push boundaries, win funding, and inspire their peers.</p>
+      <img src="images/student-success.jpg" alt="Student success">
     </div>
-    <div class="entry right">
-      <div class="content">
-        <h3>2018 · Partnership with Ashoka Schools</h3>
-        <p>Launched Kidpreneur program to empower students to turn ideas into impact.</p>
-      </div>
+
+    <div class="card">
+      <h2>Mentors & Affiliates</h2>
+      <p>With guidance from global experts and Ashoka Schools’ network, Kidpreneurs get real-world mentorship and global exposure.</p>
+      <img src="images/mentors.jpg" alt="Mentors">
     </div>
-    <div class="entry left">
-      <div class="content">
-        <h3>2020 · 500+ Student Startups</h3>
-        <p>From eco-projects to AI tools, our students showcased remarkable innovation.</p>
-      </div>
+
+    <div class="card">
+      <h2>Vision 2047</h2>
+      <p>Aligned with India’s Vision 2047, we aim for leadership in AI literacy, sustainability, and student-led entrepreneurship worldwide.</p>
+      <img src="images/vision-2047.jpg" alt="Vision 2047">
     </div>
-    <div class="entry right">
-      <div class="content">
-        <h3>2022 · National Recognition</h3>
-        <p>Kidpreneur featured as one of India’s leading student entrepreneurship programs.</p>
+
+    <div class="stats card">
+      <div class="stat">
+        <h3>150+</h3>
+        <p>Projects Launched</p>
       </div>
-    </div>
-    <div class="entry left">
-      <div class="content">
-        <h3>2024 · Global Collaborations</h3>
-        <p>Partnered with international mentors and tech leaders to guide young entrepreneurs.</p>
+      <div class="stat">
+        <h3>40+</h3>
+        <p>Workshops</p>
+      </div>
+      <div class="stat">
+        <h3>12</h3>
+        <p>National Awards</p>
       </div>
     </div>
   </section>
+</main>
 
-  <div class="dock">
-    <a href="about.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/info.png" alt="About"></a>
-    <a href="explore.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/compass.png" alt="Explore"></a>
-    <a href="ideas.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/light-on.png" alt="Ideas"></a>
-    <a href="gallery.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/image.png" alt="Gallery"></a>
-    <a href="index.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/home.png" alt="Home"></a>
-  </div>
+<nav class="dock">
+  <a href="index.html">
+    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 3l9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V10l9-7z"/></svg>
+    <span>Home</span>
+  </a>
+  <a href="about.html">
+    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+    <span>About</span>
+  </a>
+  <a href="explore.html">
+    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+    <span>Explore</span>
+  </a>
+  <a href="ideas.html">
+    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M9 21h6v-1a3 3 0 0 1 3-3h1a8 8 0 1 0-14 0h1a3 3 0 0 1 3 3v1z"/></svg>
+    <span>Ideas</span>
+  </a>
+  <a href="gallery.html">
+    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm-2 5a2 2 0 1 0 4 0 2 2 0 0 0-4 0zM12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm8 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0z"/></svg>
+    <span>Gallery</span>
+  </a>
+  <a class="active" href="inspiration.html">
+    <svg viewBox="0 0 24 24"><path fill="#0ea5ff" d="M12 1a11 11 0 0 0-9.846 16.59l-1.352 1.353a.5.5 0 0 0 .353.858H8.5V23a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1v-3.2l5.345-5.345A11 11 0 0 0 12 1zm0 2.5a8.5 8.5 0 1 1 0 17 8.5 8.5 0 0 1 0-17zm-1.5 5h3v2h-3v-2zm0 4h3v2h-3v-2z"/></svg>
+    <span>Inspiration</span>
+  </a>
+</nav>
 
-  <footer>© 2025 CodeAGS · Ashoka Group of Schools</footer>
-
-  <script>
-    // Animate timeline entries on scroll
-    const entries=document.querySelectorAll('.entry .content');
-    function revealOnScroll(){
-      const trigger=window.innerHeight*0.9;
-      entries.forEach(el=>{
-        const rect=el.getBoundingClientRect();
-        if(rect.top<trigger){
-          anime({targets:el,opacity:[0,1],translateY:[50,0],duration:1200,easing:'spring(1,80,12,0)'});
-        }
-      });
-    }
-    window.addEventListener('scroll',revealOnScroll);
-    revealOnScroll();
-
-    // Randomize particle positions
-    document.querySelectorAll('.particle').forEach(p=>{
-      const size=Math.random()*20+10;
-      p.style.width=size+'px';p.style.height=size+'px';
-      p.style.animationDuration=(Math.random()*30+30)+'s';
-      p.style.background=`rgba(255,255,255,${Math.random()*0.12+0.05})`;
+<script>
+    anime({
+      targets: '.card',
+      opacity:[0,1],
+      translateY:[60,0],
+      delay:anime.stagger(200,{start:500}),
+      duration:1200,
+      easing:'spring(1,80,12,0)'
     });
-  </script>
+</script>
+
 </body>
 </html>
