@@ -1,158 +1,372 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>About · Kidpreneur</title>
-  <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kidpreneur · About — CodeAGS</title>
+  <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700;800&display=swap" rel="stylesheet"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
   <style>
+    /* ========== RESET ========== */
     *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%}
     body{
-      font-family:"SF Pro Display",-apple-system,system-ui,Roboto,sans-serif;
-      color:#fff;overflow-x:hidden;background:#000;min-height:100vh;position:relative;
+      font-family:"SF Pro Display",-apple-system,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      background:#0b0f14; /* deep, PC-like */
+      color:#e6e6e6;
+      overflow-x:hidden;
     }
 
-    /* EXACT same background as index.html */
-    .bg{
-      position:fixed;top:0;left:0;width:100%;height:100%;z-index:-3;
-      background:radial-gradient(at 20% 30%, rgba(100,210,255,0.25), transparent 60%),
-                 radial-gradient(at 80% 20%, rgba(255,79,165,0.25), transparent 60%),
-                 radial-gradient(at 50% 80%, rgba(255,184,77,0.25), transparent 60%),
-                 #000;
-      background-size:200% 200%;
-      animation:moveGradient 30s ease-in-out infinite alternate;
-    }
-    @keyframes moveGradient {
-      0% { background-position:20% 30%, 80% 20%, 50% 80%; }
-      50% { background-position:40% 40%, 60% 30%, 55% 70%; }
-      100% { background-position:30% 25%, 70% 15%, 45% 85%; }
+    /* ========== THEME TOKENS (PC PALETTE) ========== */
+    :root{
+      --bg:#0b0f14;
+      --panel:#10151c;
+      --panel-2:#0f141a;
+      --muted:#9aa4af;
+      --line:#1c2530;
+      --ring:rgba(14,165,255,.25);
+
+      --blue:#0ea5ff;             /* primary CTA */
+      --blue-2:#3b82f6;
+      --cyan:#22d3ee;
+      --purple:#a78bfa;
+      --pink:#f472b6;
+      --yellow:#fbbf24;
+      --green:#34d399;
     }
 
-    .particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;pointer-events:none;}
-
-    header{text-align:center;padding:80px 20px 50px;}
-    header h1{
-      font-size:3.5rem;font-weight:800;margin-bottom:15px;
-      background:linear-gradient(90deg,#64d2ff,#ff4fa5);
-      -webkit-background-clip:text;color:transparent;
+    /* ========== BACKGROUND AURAS (SUBTLE, NOT NEON) ========== */
+    .bg-auras{
+      position:fixed; inset:0; z-index:-2;
+      background:
+        radial-gradient(800px 500px at 15% 15%, rgba(14,165,255,.10), transparent 60%),
+        radial-gradient(700px 400px at 85% 25%, rgba(167,139,250,.09), transparent 65%),
+        radial-gradient(700px 400px at 50% 85%, rgba(52,211,153,.07), transparent 60%),
+        var(--bg);
+      filter:saturate(110%);
     }
-    header p{font-size:1.3rem;color:#ccc;line-height:1.6;max-width:850px;margin:0 auto;}
+    .grain{
+      position:fixed; inset:0; z-index:-1; opacity:.06; pointer-events:none;
+      background-image:linear-gradient(transparent 0, rgba(255,255,255,.1) 100%);
+      mix-blend-mode:overlay;
+    }
+
+    /* ========== LAYOUT ========== */
+    .wrap{max-width:1040px;margin:0 auto;padding:28px 18px 120px}
+
+    header.hero{
+      margin-top:10px; margin-bottom:22px;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:.78rem; color:#cfeaff; background:rgba(14,165,255,.15);
+      border:1px solid rgba(14,165,255,.25); padding:6px 10px; border-radius:999px;
+      box-shadow:0 0 0 8px rgba(14,165,255,.04) inset;
+    }
+    .hero h1{
+      margin-top:14px;
+      font-size:2.1rem; line-height:1.15; font-weight:800;
+      letter-spacing:.2px; color:#f3f7ff;
+      text-shadow:0 1px 0 rgba(255,255,255,.05);
+    }
+    .hero p{
+      margin-top:10px; color:var(--muted); font-size:1.05rem; line-height:1.6;
+    }
+
+    /* ========== CHIPS ROW (like PC quick pills) ========== */
+    .chips{
+      display:flex; gap:10px; flex-wrap:wrap; margin:18px 0 8px;
+    }
+    .chip{
+      --c: var(--blue);
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px; border-radius:999px; border:1px solid rgba(255,255,255,.06);
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      box-shadow:0 6px 18px rgba(0,0,0,.35), 0 0 0 6px rgba(255,255,255,.015) inset;
+      font-weight:600; font-size:.9rem; color:#eaf6ff;
+    }
+    .dot{width:8px;height:8px;border-radius:50%;background:var(--c);box-shadow:0 0 8px var(--c)}
+
+    /* ========== PANEL / CARD ========== */
+    .card{
+      position:relative;
+      background:linear-gradient(180deg, var(--panel), var(--panel-2));
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:22px;
+      box-shadow:
+        0 18px 40px rgba(0,0,0,.5),
+        0 1px 0 rgba(255,255,255,.03) inset;
+      transform:translateY(28px); opacity:0;
+    }
+    .card::after{ /* glow ring */
+      content:""; position:absolute; inset:-1px; border-radius:inherit;
+      pointer-events:none;
+      box-shadow:0 0 0 1px rgba(255,255,255,.02) inset, 0 0 0 10px var(--ring);
+      opacity:.0; transition:opacity .35s ease;
+    }
+    .card:hover::after{opacity:.3}
 
     .grid{
-      max-width:1100px;margin:0 auto;padding:40px 25px 120px;
-      display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-      gap:30px;
+      display:grid; gap:18px; margin-top:14px;
     }
-    .card{
-      background:rgba(255,255,255,0.07);
-      border-radius:24px;
-      padding:30px;
-      backdrop-filter:blur(16px);
-      box-shadow:0 10px 25px rgba(0,0,0,0.6);
-      text-align:center;
-      transform:translateY(40px);
-      opacity:0;
-    }
-    .card img{width:80px;height:80px;margin-bottom:15px;filter:drop-shadow(0 0 6px rgba(0,0,0,0.6))}
-    .card h3{font-size:1.5rem;margin-bottom:12px;color:#fff;}
-    .card p{font-size:1rem;color:#bbb;}
 
+    .card h2{font-size:1.28rem; font-weight:800; color:#f5f7fb; margin-bottom:8px}
+    .card p{color:#b9c3cc; line-height:1.65}
+
+    /* ========== STATS ========== */
+    .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:14px}
+    .stat{
+      background:linear-gradient(180deg, #0d1218, #0e151c);
+      border:1px solid var(--line); border-radius:18px; padding:14px;
+      display:flex; flex-direction:column; align-items:center; gap:6px;
+    }
+    .stat h3{font-size:1.3rem; font-weight:800; color:#eaf2ff}
+    .stat p{font-size:.8rem; color:#9fb0bf}
+
+    /* ========== STEPS ========== */
+    .steps{display:grid; gap:12px; margin-top:10px}
+    .step{
+      display:flex; gap:12px; align-items:flex-start;
+      background:linear-gradient(180deg, #0e151c, #0d1218);
+      border:1px solid var(--line); border-radius:18px; padding:12px 14px;
+    }
+    .n{
+      width:28px; height:28px; border-radius:8px; flex:0 0 28px;
+      display:grid; place-items:center; font-weight:800; color:#031018;
+      background:linear-gradient(135deg, var(--blue), #7dd3fc);
+      box-shadow:0 8px 18px rgba(14,165,255,.35);
+      transform:translateZ(0);
+    }
+    .step b{color:#e9f3ff}
+
+    /* ========== CTA BUTTONS (blue glow) ========== */
+    .btns{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px}
+    .btn{
+      appearance:none; border:none; border-radius:14px; padding:12px 16px;
+      font-weight:700; cursor:pointer; transition:transform .15s ease, box-shadow .25s ease, background .25s ease;
+    }
+    .btn-primary{
+      color:#031018;
+      background:linear-gradient(180deg, var(--blue), var(--blue-2));
+      box-shadow:0 14px 32px rgba(14,165,255,.35), 0 0 0 1px rgba(255,255,255,.06) inset;
+    }
+    .btn-primary:hover{transform:translateY(-1px); box-shadow:0 18px 40px rgba(14,165,255,.45)}
+    .btn-ghost{
+      color:#c9d4df; background:linear-gradient(180deg, #10161e, #0e141b);
+      border:1px solid var(--line);
+    }
+    .btn-ghost:hover{transform:translateY(-1px)}
+
+    /* ========== PARTNERS (logo pills) ========== */
+    .logos{display:flex; flex-wrap:wrap; gap:10px; margin-top:12px}
+    .logo{
+      display:inline-flex; align-items:center; gap:8px; padding:10px 12px;
+      background:linear-gradient(180deg,#10161e,#0f141b); border:1px solid var(--line);
+      border-radius:14px; color:#dce7f3; font-weight:600; font-size:.95rem;
+    }
+    .svg-badge{width:18px;height:18px}
+
+    /* ========== DOCK (bottom nav, rounded) ========== */
     .dock{
-      position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
-      width:92%;max-width:700px;height:95px;
-      background:rgba(255,255,255,0.08);backdrop-filter:blur(25px);
-      border-radius:36px;
-      display:flex;justify-content:space-around;align-items:center;
-      box-shadow:0 18px 40px rgba(0,0,0,0.65);z-index:2;
+      position:fixed; left:50%; bottom:16px; transform:translateX(-50%);
+      width:min(760px,92%); height:74px; z-index:50;
+      background:linear-gradient(180deg, #0e141b, #0c1117);
+      border:1px solid var(--line); border-radius:22px;
+      display:flex; justify-content:space-around; align-items:center;
+      box-shadow:0 16px 40px rgba(0,0,0,.55);
     }
-    .dock a img{width:54px;height:54px;border-radius:16px;transition:transform .25s;}
-    .dock a img:hover{transform:scale(1.2);}
+    .dock a{
+      display:flex; flex-direction:column; align-items:center; gap:6px;
+      text-decoration:none; color:#9fb0bf; font-size:.75rem;
+      transition:color .2s ease, transform .2s ease;
+    }
+    .dock a.active{color:#eaf6ff}
+    .dock a:hover{transform:translateY(-2px)}
+    .dock svg{width:22px;height:22px; filter:drop-shadow(0 2px 6px rgba(14,165,255,.2))}
+    .active svg path{fill:var(--blue)}
 
-    footer{text-align:center;padding:50px 20px 140px;font-size:1rem;color:#aaa;}
-    @media(max-width:600px){
-      header h1{font-size:2.5rem;} header p{font-size:1rem;}
-      .card h3{font-size:1.2rem;} .card p{font-size:0.9rem;}
+    /* ========== RESPONSIVE ========== */
+    @media(min-width:640px){
+      .hero h1{font-size:2.6rem}
+      .wrap{padding:34px 22px 130px}
+      .grid.cols-2{grid-template-columns:repeat(2,1fr)}
+    }
+    @media(min-width:920px){
+      .hero h1{font-size:3rem}
+      .grid.cols-3{grid-template-columns:repeat(3,1fr)}
     }
   </style>
 </head>
 <body>
-  <div class="bg"></div>
-  <div class="particles"></div>
+  <div class="bg-auras"></div>
+  <div class="grain"></div>
 
-  <header>
-    <h1>About Kidpreneur</h1>
-    <p>Where curiosity meets creativity. Powered by <strong>CodeAGS</strong> and the <strong>Ashoka Group of Schools</strong>.</p>
-  </header>
+  <main class="wrap">
+    <!-- HERO -->
+    <header class="hero">
+      <span class="badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3l8 4v10l-8 4-8-4V7l8-4z" fill="rgba(14,165,255,1)"/></svg>
+        CodeAGS • Ashoka Group
+      </span>
+      <h1>About Kidpreneur</h1>
+      <p>CodeAGS’ student startup program with Ashoka Group of Schools. We help students turn ideas into products — with mentorship, labs, showcases and a community that ships.</p>
 
-  <section class="grid">
-    <div class="card">
-      <img src="https://img.icons8.com/fluency/96/rocket.png" alt="Mission"/>
-      <h3>Our Mission</h3>
-      <p>Ignite entrepreneurship in young minds by giving them the tools, mentors, and stage to innovate fearlessly.</p>
-    </div>
-    <div class="card">
-      <img src="https://img.icons8.com/color/96/futurama-bender.png" alt="Vision"/>
-      <h3>Our Vision</h3>
-      <p>Students as <strong>job creators</strong>, not seekers. Bold thinkers, problem-solvers, and changemakers of tomorrow.</p>
-    </div>
-    <div class="card">
-      <img src="https://img.icons8.com/color/96/conference.png" alt="Story"/>
-      <h3>Our Story</h3>
-      <p>Started as a school experiment, now a growing platform connecting <strong>students, mentors, and ideas</strong> worldwide.</p>
-    </div>
-    <div class="card">
-      <img src="https://img.icons8.com/color/96/idea.png" alt="Values"/>
-      <h3>Our Values</h3>
-      <p><strong>Innovation</strong>, <strong>Collaboration</strong>, <strong>Resilience</strong>, and <strong>Impact</strong>.  
-         Four pillars guiding every project we nurture.</p>
-    </div>
-    <div class="card">
-      <img src="https://img.icons8.com/color/96/teacher.png" alt="Mentors"/>
-      <h3>Our Mentors</h3>
-      <p>Guided by experts from education and industry, students are encouraged to dream bigger and build smarter.</p>
-    </div>
-    <div class="card">
-      <img src="https://img.icons8.com/color/96/group-of-projects.png" alt="Impact"/>
-      <h3>Impact</h3>
-      <p>From eco-projects to community apps — <strong>hundreds of ideas</strong> have already been born under Kidpreneur.</p>
-    </div>
-  </section>
+      <div class="chips">
+        <span class="chip" style="--c:var(--blue)"><span class="dot"></span> KP Program</span>
+        <span class="chip" style="--c:var(--yellow)"><span class="dot"></span> Ideas</span>
+        <span class="chip" style="--c:var(--green)"><span class="dot"></span> Programs</span>
+        <span class="chip" style="--c:var(--purple)"><span class="dot"></span> Gallery</span>
+        <span class="chip" style="--c:var(--pink)"><span class="dot"></span> Inspiration</span>
+      </div>
+    </header>
 
-  <div class="dock">
-    <a href="index.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/home.png" alt="Home"></a>
-    <a href="explore.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/compass.png" alt="Explore"></a>
-    <a href="ideas.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/light-on.png" alt="Ideas"></a>
-    <a href="gallery.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/image.png" alt="Gallery"></a>
-    <a href="inspiration.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/rocket.png" alt="Inspiration"></a>
-  </div>
+    <!-- MISSION + VISION -->
+    <section class="grid cols-2">
+      <article class="card">
+        <h2>Mission</h2>
+        <p>Enable students to think critically, build confidently and ship publicly. From the first sketch to the demo day, we pair bold ideas with practical execution.</p>
+        <div class="btns">
+          <a class="btn btn-primary" href="explore.html">Explore Programs</a>
+          <a class="btn btn-ghost" href="ideas.html">Submit Idea</a>
+        </div>
+      </article>
 
-  <footer>© 2025 CodeAGS · Ashoka Group of Schools</footer>
+      <article class="card">
+        <h2>Vision 2047</h2>
+        <p>Aligned with India’s Vision 2047 — AI literacy for all, sustainable design at the core, and student-led ventures that scale globally from classrooms.</p>
+      </article>
+    </section>
+
+    <!-- STATS -->
+    <section class="card">
+      <h2>Impact so far</h2>
+      <div class="stats">
+        <div class="stat">
+          <h3>500+</h3><p>Projects</p>
+        </div>
+        <div class="stat">
+          <h3>2,000+</h3><p>Students</p>
+        </div>
+        <div class="stat">
+          <h3>50+</h3><p>Awards</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="card">
+      <h2>How Kidpreneur works</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="n">1</div>
+          <p><b>Kickoff workshops</b> — pick a problem space, learn rapid prototyping, form teams.</p>
+        </div>
+        <div class="step">
+          <div class="n" style="background:linear-gradient(135deg,var(--purple),#c4b5fd)">2</div>
+          <p><b>Mentor sprints</b> — weekly critiques with engineers, designers and founders.</p>
+        </div>
+        <div class="step">
+          <div class="n" style="background:linear-gradient(135deg,var(--green),#86efac)">3</div>
+          <p><b>Build & iterate</b> — test with users, ship improvements, prep the demo.</p>
+        </div>
+        <div class="step">
+          <div class="n" style="background:linear-gradient(135deg,var(--yellow),#fde68a)">4</div>
+          <p><b>Showcase</b> — present to peers, teachers and partners; top teams get support.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PARTNERS -->
+    <section class="card">
+      <h2>Partners & Affiliates</h2>
+      <p>Supported by Ashoka Group of Schools and a network of universities, labs and startups. Together we provide access to cutting-edge tools and guidance.</p>
+      <div class="logos">
+        <span class="logo">
+          <svg class="svg-badge" viewBox="0 0 24 24"><path fill="var(--blue)" d="M12 2l9 5v10l-9 5-9-5V7z"/></svg>
+          CodeAGS
+        </span>
+        <span class="logo">
+          <svg class="svg-badge" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="var(--green)"/></svg>
+          Ashoka Schools
+        </span>
+        <span class="logo">
+          <svg class="svg-badge" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3" fill="var(--purple)"/></svg>
+          University Lab
+        </span>
+        <span class="logo">
+          <svg class="svg-badge" viewBox="0 0 24 24"><path d="M4 18l8-12 8 12H4z" fill="var(--yellow)"/></svg>
+          Startup Partner
+        </span>
+      </div>
+    </section>
+
+    <!-- VALUES -->
+    <section class="grid cols-3">
+      <article class="card">
+        <h2>Build in public</h2>
+        <p>Share progress early. Collect feedback. Iterate faster than the problem changes.</p>
+      </article>
+      <article class="card">
+        <h2>Real users, real impact</h2>
+        <p>Projects are grounded in real needs — schools, neighborhoods, or global issues.</p>
+      </article>
+      <article class="card">
+        <h2>Ownership</h2>
+        <p>Students lead. Mentors guide. Wins (and lessons) belong to the team.</p>
+      </article>
+    </section>
+  </main>
+
+  <!-- DOCK NAV -->
+  <nav class="dock" aria-label="Primary">
+    <a href="index.html" title="Home">
+      <svg viewBox="0 0 24 24"><path fill="#9fb0bf" d="M12 3l9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V10l9-7z"/></svg>
+      <span>Home</span>
+    </a>
+    <a class="active" href="about.html" title="About">
+      <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" fill="#0ea5ff"/></svg>
+      <span>About</span>
+    </a>
+    <a href="explore.html" title="Explore">
+      <svg viewBox="0 0 24 24"><path fill="#9fb0bf" d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+      <span>Explore</span>
+    </a>
+    <a href="ideas.html" title="Ideas">
+      <svg viewBox="0 0 24 24"><path fill="#9fb0bf" d="M9 21h6v-1a3 3 0 0 1 3-3h1a8 8 0 1 0-14 0h1a3 3 0 0 1 3 3v1z"/></svg>
+      <span>Ideas</span>
+    </a>
+    <a href="gallery.html" title="Gallery">
+      <svg viewBox="0 0 24 24"><path fill="#9fb0bf" d="M21 19a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7h18v12zM5 5V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v1H5z"/></svg>
+      <span>Gallery</span>
+    </a>
+  </nav>
 
   <script>
-    // Particles (same as index.html)
-    const particles=document.querySelector('.particles');
-    for(let i=0;i<20;i++){
-      const p=document.createElement('div');
-      p.classList.add('particle');
-      const size=Math.random()*20+10;
-      p.style.width=size+'px';p.style.height=size+'px';
-      p.style.left=Math.random()*100+'%';p.style.top=Math.random()*100+'%';
-      p.style.background=`rgba(255,255,255,${Math.random()*0.12+0.05})`;
-      p.style.borderRadius="50%";p.style.position="absolute";p.style.filter="blur(6px)";
-      p.style.animation=`float ${Math.random()*30+30}s linear infinite`;
-      particles.appendChild(p);
-    }
-
-    // Animate cards
+    // Stagger in everything, PC-style subtle motion
     anime({
       targets: '.card',
       opacity:[0,1],
-      translateY:[40,0],
-      delay:anime.stagger(250,{start:500}),
-      duration:1200,
-      easing:'spring(1, 80, 12, 0)'
+      translateY:[28,0],
+      easing:'easeOutCubic',
+      delay: anime.stagger(140, {start:300})
     });
+    anime({
+      targets: '.chip',
+      opacity:[0,1],
+      translateY:[8,0],
+      easing:'easeOutCubic',
+      delay: anime.stagger(90, {start:200})
+    });
+    // Little pulse on primary CTA
+    setTimeout(()=> {
+      anime({
+        targets: '.btn-primary',
+        scale:[1,1.04,1],
+        duration:900,
+        easing:'easeInOutQuad'
+      });
+    }, 900);
   </script>
 </body>
 </html>
