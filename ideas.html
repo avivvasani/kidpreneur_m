@@ -1,187 +1,288 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Submit Idea · Kidpreneur</title>
-  <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700;800&display=swap" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-  <style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Kidpreneur · Ideas</title>
+
+<link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+<style>
+    /* ========== RESET ========== */
     *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%}
     body{
-      font-family:"SF Pro Display",-apple-system,system-ui,Roboto,sans-serif;
-      color:#fff;background:#000;overflow-x:hidden;min-height:100vh;
+      font-family:"SF Pro Display",-apple-system,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      background:#0b0f14; /* deep, PC-like */
+      color:#e6e6e6;
+      overflow-x:hidden;
+    }
+
+    /* ========== THEME TOKENS (PC PALETTE) ========== */
+    :root{
+      --bg:#0b0f14;
+      --panel:#10151c;
+      --panel-2:#0f141a;
+      --muted:#9aa4af;
+      --line:#1c2530;
+      --ring:rgba(14,165,255,.25);
+
+      --blue:#0ea5ff;             /* primary CTA */
+      --blue-2:#3b82f6;
+      --cyan:#22d3ee;
+      --purple:#a78bfa;
+      --pink:#f472b6;
+      --yellow:#fbbf24;
+      --green:#34d399;
+    }
+
+    /* ========== BACKGROUND AURAS (SUBTLE, NOT NEON) ========== */
+    .bg-auras{
+      position:fixed; inset:0; z-index:-2;
+      background:
+        radial-gradient(800px 500px at 15% 15%, rgba(14,165,255,.10), transparent 60%),
+        radial-gradient(700px 400px at 85% 25%, rgba(167,139,250,.09), transparent 65%),
+        radial-gradient(700px 400px at 50% 85%, rgba(52,211,153,.07), transparent 60%),
+        var(--bg);
+      filter:saturate(110%);
+    }
+    .grain{
+      position:fixed; inset:0; z-index:-1; opacity:.06; pointer-events:none;
+      background-image:linear-gradient(transparent 0, rgba(255,255,255,.1) 100%);
+      mix-blend-mode:overlay;
+    }
+
+    /* ========== LAYOUT ========== */
+    .wrap{
+        max-width:680px;
+        margin:0 auto;
+        padding:28px 18px 120px;
+        position:relative;
+        z-index:2;
+    }
+
+    header.hero{
+      margin-top:10px; margin-bottom:22px;
+      text-align:center;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:.78rem; color:#cfeaff; background:rgba(14,165,255,.15);
+      border:1px solid rgba(14,165,255,.25); padding:6px 10px; border-radius:999px;
+      box-shadow:0 0 0 8px rgba(14,165,255,.04) inset;
+    }
+    .hero h1{
+      margin-top:14px;
+      font-size:2.1rem; line-height:1.15; font-weight:800;
+      letter-spacing:.2px; color:#f3f7ff;
+      text-shadow:0 1px 0 rgba(255,255,255,.05);
+      font-size:2.2rem;
+      background:linear-gradient(90deg,#64d2ff,#ff4fa5);
+      -webkit-background-clip:text;
+      color:transparent;
+    }
+    .hero p{
+      margin-top:10px; color:var(--muted); font-size:1.05rem; line-height:1.6;
+    }
+
+    /* ========== CHIPS ROW (like PC quick pills) ========== */
+    .chips{
+      display:flex; gap:10px; flex-wrap:wrap; margin:18px 0 8px;
+    }
+    .chip{
+      --c: var(--blue);
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px; border-radius:999px; border:1px solid rgba(255,255,255,.06);
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      box-shadow:0 6px 18px rgba(0,0,0,.35), 0 0 0 6px rgba(255,255,255,.015) inset;
+      font-weight:600; font-size:.9rem; color:#eaf6ff;
+    }
+    .dot{width:8px;height:8px;border-radius:50%;background:var(--c);box-shadow:0 0 8px var(--c)}
+
+    /* ========== PANEL / CARD ========== */
+    .card{
       position:relative;
+      background:linear-gradient(180deg, var(--panel), var(--panel-2));
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:22px;
+      box-shadow:
+        0 18px 40px rgba(0,0,0,.5),
+        0 1px 0 rgba(255,255,255,.03) inset;
+      transform:translateY(28px); opacity:0;
+    }
+    .card::after{ /* glow ring */
+      content:""; position:absolute; inset:-1px; border-radius:inherit;
+      pointer-events:none;
+      box-shadow:0 0 0 1px rgba(255,255,255,.02) inset, 0 0 0 10px var(--ring);
+      opacity:.0; transition:opacity .35s ease;
+    }
+    .card:hover::after{opacity:.3}
+
+    .grid{
+      display:grid; gap:18px; margin-top:14px;
     }
 
-    /* Exact background from index.html */
-    .bg{
-      position:fixed;top:0;left:0;width:100%;height:100%;z-index:-3;
-      background:radial-gradient(at 20% 30%, rgba(100,210,255,0.25), transparent 60%),
-                 radial-gradient(at 80% 20%, rgba(255,79,165,0.25), transparent 60%),
-                 radial-gradient(at 50% 80%, rgba(255,184,77,0.25), transparent 60%),
-                 #000;
-      background-size:200% 200%;
-      animation:moveGradient 30s ease-in-out infinite alternate;
+    .card h2{font-size:1.28rem; font-weight:800; color:#f5f7fb; margin-bottom:8px}
+    .card p{color:#b9c3cc; line-height:1.65}
+    .form-card {
+      margin-top:18px;
+      background:linear-gradient(180deg, var(--panel), var(--panel-2));
+      backdrop-filter:none;
+      border-radius:22px;
+      padding:24px;
+      box-shadow:
+        0 18px 40px rgba(0,0,0,.5),
+        0 1px 0 rgba(255,255,255,.03) inset;
+      transform:translateY(28px);
+      opacity:0;
     }
-    @keyframes moveGradient {
-      0% { background-position:20% 30%, 80% 20%, 50% 80%; }
-      50% { background-position:40% 40%, 60% 30%, 55% 70%; }
-      100% { background-position:30% 25%, 70% 15%, 45% 85%; }
+    label {display:block;margin-top:14px;margin-bottom:6px;font-weight:600;color:#cde7ff;font-size:.9rem;}
+    input, select, textarea {
+      width:100%; padding:12px 14px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, #0d1218, #0e151c);
+      color:#e6eef6;
+      font-size:1rem;
+      transition:box-shadow .2s;
     }
-
-    .particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;pointer-events:none;}
-
-    header{text-align:center;padding:70px 20px 40px;}
-    header h1{
-      font-size:3.2rem;font-weight:800;margin-bottom:15px;
-      background:linear-gradient(90deg,#64d2ff,#ff4fa5);
-      -webkit-background-clip:text;color:transparent;
-    }
-    header p{font-size:1.2rem;color:#ccc;max-width:800px;margin:0 auto;}
-
-    form{
-      max-width:900px;margin:40px auto 120px;
-      background:rgba(255,255,255,0.07);
-      backdrop-filter:blur(20px);
-      border-radius:24px;
-      padding:40px;
-      box-shadow:0 10px 25px rgba(0,0,0,0.6);
-      opacity:0;transform:translateY(50px);
-    }
-    form .field{margin-bottom:25px;}
-    form label{display:block;font-weight:600;margin-bottom:8px;color:#fff;font-size:1rem;}
-    form input,form textarea,form select{
-      width:100%;padding:14px 16px;
-      border:none;border-radius:14px;
-      background:rgba(255,255,255,0.15);
-      color:#fff;font-size:1rem;
+    input:focus, select:focus, textarea:focus {
       outline:none;
-      transition:background .3s;
+      box-shadow:0 0 0 2px var(--blue-2);
     }
-    form input:focus,form textarea:focus,form select:focus{
-      background:rgba(255,255,255,0.25);
-    }
-    form textarea{resize:vertical;min-height:120px;}
-    form input[type="file"]{padding:10px;cursor:pointer;}
+    textarea {min-height:110px;}
 
-    form button{
-      background:linear-gradient(90deg,#64d2ff,#ff4fa5);
-      border:none;color:#fff;
-      font-weight:700;font-size:1.1rem;
-      padding:14px 28px;
-      border-radius:18px;
+    button {
+      margin-top:20px;
+      width:100%;
+      padding:14px;
+      border:none;
+      border-radius:14px;
+      font-weight:700;
+      font-size:1.05rem;
       cursor:pointer;
-      transition:transform .2s,box-shadow .2s;
+      background:linear-gradient(180deg, var(--blue), var(--blue-2));
+      color:#fff;
+      box-shadow:0 14px 32px rgba(14,165,255,.35), 0 0 0 1px rgba(255,255,255,.06) inset;
+      transition:transform .2s;
     }
-    form button:hover{transform:scale(1.05);box-shadow:0 8px 20px rgba(0,0,0,0.5);}
+    button:hover {transform:translateY(-1px);box-shadow:0 18px 40px rgba(14,165,255,.45)}
+    button:active {transform:scale(0.98);}
 
+    #status {
+      margin-top:14px;
+      text-align:center;
+      font-size:.9rem;
+      background:rgba(255,255,255,0.07);
+      padding:8px 12px;
+      border-radius:12px;
+      display:none;
+    }
+
+
+    /* ========== DOCK (bottom nav, rounded) ========== */
     .dock{
-      position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
-      width:92%;max-width:700px;height:95px;
-      background:rgba(255,255,255,0.08);backdrop-filter:blur(25px);
-      border-radius:36px;
-      display:flex;justify-content:space-around;align-items:center;
-      box-shadow:0 18px 40px rgba(0,0,0,0.65);z-index:2;
+      position:fixed; left:50%; bottom:16px; transform:translateX(-50%);
+      width:min(760px,92%); height:74px; z-index:50;
+      background:linear-gradient(180deg, #0e141b, #0c1117);
+      border:1px solid var(--line); border-radius:22px;
+      box-shadow:0 18px 48px rgba(0,0,0,.6);
+      display:flex; justify-content:space-around; align-items:center;
     }
-    .dock a img{width:54px;height:54px;border-radius:16px;transition:transform .25s;}
-    .dock a img:hover{transform:scale(1.2);}
-
-    footer{text-align:center;padding:40px 20px 140px;font-size:1rem;color:#aaa;}
-  </style>
+    .dock a{
+      display:flex; flex-direction:column; align-items:center;
+      gap:6px; text-decoration:none;
+      color:#9fb0bf; font-size:.72rem;
+    }
+    .dock a.active{color:#eaf6ff}
+    .dock svg{width:20px;height:20px}
+</style>
 </head>
 <body>
-  <div class="bg"></div>
-  <div class="particles"></div>
 
-  <header>
-    <h1>Submit Your Idea</h1>
-    <p>Turn your vision into reality. Share your project with Kidpreneur and let it shine.</p>
+<div class="bg-auras"></div>
+<div class="grain"></div>
+
+<main class="wrap">
+  <header class="hero">
+    <h1>Share Your Idea</h1>
+    <p>Have an idea for a business, app, or social project? We want to hear it! Submit your concept for a chance to be featured and get mentor feedback.</p>
   </header>
 
-  <form id="ideaForm" enctype="multipart/form-data">
-    <div class="field">
-      <label for="name">Name(s)</label>
-      <input type="text" id="name" name="name" placeholder="Enter participant name(s)" required>
-    </div>
-    <div class="field">
-      <label for="contact">Contact (Email or Phone)</label>
-      <input type="text" id="contact" name="contact" placeholder="Enter contact details" required>
-    </div>
-    <div class="field">
-      <label for="ideaName">Idea Name</label>
-      <input type="text" id="ideaName" name="ideaName" placeholder="Give your idea a title" required>
-    </div>
-    <div class="field">
-      <label for="field">Field of Idea</label>
-      <select id="field" name="field" required>
-        <option value="">Select field</option>
-        <option>Technology</option>
-        <option>Environment</option>
-        <option>Education</option>
-        <option>Healthcare</option>
-        <option>Community</option>
-        <option>Other</option>
-      </select>
-    </div>
-    <div class="field">
-      <label for="description">Description</label>
-      <textarea id="description" name="description" placeholder="Describe your idea in detail..." required></textarea>
-    </div>
-    <div class="field">
-      <label for="file">Upload File (Image/Video/PPT)</label>
-      <input type="file" id="file" name="file" accept="image/*,video/*,.ppt,.pptx,.pdf">
-    </div>
+  <form id="ideaForm" class="form-card">
+    <label for="name">Your Name</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="email">Your Email</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="ideaTitle">Idea Title</label>
+    <input type="text" id="ideaTitle" name="ideaTitle" required>
+
+    <label for="ideaCategory">Category</label>
+    <select id="ideaCategory" name="ideaCategory">
+      <option value="app">App Development</option>
+      <option value="game">Game Design</option>
+      <option value="robotics">Robotics</option>
+      <option value="social">Social Innovation</option>
+      <option value="other">Other</option>
+    </select>
+
+    <label for="ideaDescription">Idea Description</label>
+    <textarea id="ideaDescription" name="ideaDescription" required></textarea>
+
     <button type="submit">Submit Idea</button>
+    <div id="status"></div>
   </form>
+</main>
 
-  <div class="dock">
-    <a href="about.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/info.png" alt="About"></a>
-    <a href="explore.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/compass.png" alt="Explore"></a>
-    <a href="index.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/home.png" alt="Home"></a>
-    <a href="gallery.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/image.png" alt="Gallery"></a>
-    <a href="inspiration.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/rocket.png" alt="Inspiration"></a>
-  </div>
+<nav class="dock">
+  <a href="index.html">
+    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 3l9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V10l9-7z"/></svg>
+    <span>Home</span>
+  </a>
+  <a href="about.html">
+    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+    <span>About</span>
+  </a>
+  <a href="explore.html">
+    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+    <span>Explore</span>
+  </a>
+  <a class="active" href="ideas.html">
+    <svg viewBox="0 0 24 24"><path fill="#0ea5ff" d="M9 21h6v-1a3 3 0 0 1 3-3h1a8 8 0 1 0-14 0h1a3 3 0 0 1 3 3v1z"/></svg>
+    <span>Ideas</span>
+  </a>
+  <a href="gallery.html">
+    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm-2 5a2 2 0 1 0 4 0 2 2 0 0 0-4 0zM12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm8 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0z"/></svg>
+    <span>Gallery</span>
+  </a>
+  <a href="inspiration.html">
+    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 1a11 11 0 0 0-9.846 16.59l-1.352 1.353a.5.5 0 0 0 .353.858H8.5V23a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1v-3.2l5.345-5.345A11 11 0 0 0 12 1zm0 2.5a8.5 8.5 0 1 1 0 17 8.5 8.5 0 0 1 0-17zm-1.5 5h3v2h-3v-2zm0 4h3v2h-3v-2z"/></svg>
+    <span>Inspiration</span>
+  </a>
+</nav>
 
-  <footer>© 2025 CodeAGS · Ashoka Group of Schools</footer>
-
-  <script>
-    // Particles
-    const particles=document.querySelector('.particles');
-    for(let i=0;i<20;i++){
-      const p=document.createElement('div');
-      const size=Math.random()*20+10;
-      p.style.width=size+'px';p.style.height=size+'px';
-      p.style.left=Math.random()*100+'%';p.style.top=Math.random()*100+'%';
-      p.style.background=`rgba(255,255,255,${Math.random()*0.12+0.05})`;
-      p.style.borderRadius="50%";p.style.position="absolute";p.style.filter="blur(6px)";
-      p.style.animation=`float ${Math.random()*30+30}s linear infinite`;
-      particles.appendChild(p);
-    }
-
-    // Animate form
+<script>
+    document.getElementById('ideaForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const statusDiv = document.getElementById('status');
+      statusDiv.style.display = 'block';
+      statusDiv.textContent = 'Submitting your idea...';
+      setTimeout(() => {
+        statusDiv.textContent = 'Idea submitted successfully! Thank you for sharing.';
+      }, 2000);
+    });
     anime({
-      targets: 'form',
+      targets: '.form-card',
       opacity:[0,1],
-      translateY:[50,0],
-      duration:1200,
+      translateY:[40,0],
+      duration:1000,
       easing:'spring(1, 80, 12, 0)'
     });
+</script>
 
-    // Handle form submit
-    document.getElementById("ideaForm").addEventListener("submit", async (e)=>{
-      e.preventDefault();
-      const formData = new FormData(e.target);
-      try {
-        const res = await fetch("http://YOUR_PUBLIC_IP:PORT/submit", {
-          method:"POST",
-          body: formData
-        });
-        alert("Idea submitted successfully!");
-      } catch(err) {
-        alert("Error submitting idea.");
-      }
-    });
-  </script>
 </body>
 </html>
