@@ -1,157 +1,137 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Explore · Kidpreneur</title>
-  <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700;800&display=swap" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{
-      font-family:"SF Pro Display",-apple-system,system-ui,Roboto,sans-serif;
-      color:#fff;overflow-x:hidden;background:#000;min-height:100vh;position:relative;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Kidpreneur · Explore — CodeAGS</title>
 
-    /* EXACT same background as index.html */
-    .bg{
-      position:fixed;top:0;left:0;width:100%;height:100%;z-index:-3;
-      background:radial-gradient(at 20% 30%, rgba(100,210,255,0.25), transparent 60%),
-                 radial-gradient(at 80% 20%, rgba(255,79,165,0.25), transparent 60%),
-                 radial-gradient(at 50% 80%, rgba(255,184,77,0.25), transparent 60%),
-                 #000;
-      background-size:200% 200%;
-      animation:moveGradient 30s ease-in-out infinite alternate;
-    }
-    @keyframes moveGradient {
-      0% { background-position:20% 30%, 80% 20%, 50% 80%; }
-      50% { background-position:40% 40%, 60% 30%, 55% 70%; }
-      100% { background-position:30% 25%, 70% 15%, 45% 85%; }
-    }
+<link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 
-    .particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;pointer-events:none;}
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:"SF Pro Display",-apple-system,system-ui,Roboto,sans-serif;
+    background:#0b0f14;color:#e6eef6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
 
-    header{text-align:center;padding:80px 20px 50px;}
-    header h1{
-      font-size:3.5rem;font-weight:800;margin-bottom:15px;
-      background:linear-gradient(90deg,#64d2ff,#ff4fa5);
-      -webkit-background-clip:text;color:transparent;
-    }
-    header p{font-size:1.3rem;color:#ccc;line-height:1.6;max-width:850px;margin:0 auto;}
+  :root{
+    --panel:#10151c; --panel-2:#0f141a;
+    --muted:#9aa4af; --line:#171e26;
+    --blue:#0ea5ff; --blue-2:#3b82f6;
+  }
 
-    .grid{
-      max-width:1100px;margin:0 auto;padding:40px 25px 120px;
-      display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-      gap:30px;
-    }
-    .card{
-      background:rgba(255,255,255,0.07);
-      border-radius:24px;
-      padding:30px;
-      backdrop-filter:blur(16px);
-      box-shadow:0 10px 25px rgba(0,0,0,0.6);
-      text-align:center;
-      transform:translateY(40px);
-      opacity:0;
-    }
-    .card img{width:90px;height:90px;margin-bottom:15px;filter:drop-shadow(0 0 6px rgba(0,0,0,0.6))}
-    .card h3{font-size:1.5rem;margin-bottom:12px;color:#fff;}
-    .card p{font-size:1rem;color:#bbb;}
+  .bg-auras{
+    position:fixed;inset:0;z-index:-2;
+    background:
+      radial-gradient(800px 500px at 12% 14%, rgba(14,165,255,.08), transparent 45%),
+      radial-gradient(600px 380px at 86% 22%, rgba(167,139,250,.06), transparent 55%),
+      radial-gradient(700px 400px at 50% 84%, rgba(52,211,153,.05), transparent 55%),
+      #0b0f14;
+  }
+  .wrap{max-width:1040px;margin:0 auto;padding:28px 18px 120px}
 
-    .dock{
-      position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
-      width:92%;max-width:700px;height:95px;
-      background:rgba(255,255,255,0.08);backdrop-filter:blur(25px);
-      border-radius:36px;
-      display:flex;justify-content:space-around;align-items:center;
-      box-shadow:0 18px 40px rgba(0,0,0,0.65);z-index:2;
-    }
-    .dock a img{width:54px;height:54px;border-radius:16px;transition:transform .25s;}
-    .dock a img:hover{transform:scale(1.2);}
+  header.hero{margin-bottom:20px}
+  .badge{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;color:#cfeaff;background:rgba(14,165,255,.13);padding:6px 10px;border-radius:999px;border:1px solid rgba(14,165,255,.18)}
+  .hero h1{margin-top:12px;font-size:2rem;font-weight:800;color:#f3f7ff}
+  .hero p{margin-top:10px;color:var(--muted);font-size:1rem;line-height:1.5}
 
-    footer{text-align:center;padding:50px 20px 140px;font-size:1rem;color:#aaa;}
-    @media(max-width:600px){
-      header h1{font-size:2.5rem;} header p{font-size:1rem;}
-      .card h3{font-size:1.2rem;} .card p{font-size:0.9rem;}
-    }
-  </style>
+  .grid{margin-top:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+  .program{
+    background:linear-gradient(180deg,var(--panel),var(--panel-2));
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:14px;
+    box-shadow:0 16px 40px rgba(0,0,0,.55);
+    transform:translateY(26px);opacity:0;
+    transition:transform .25s ease;
+  }
+  .program:hover{transform:translateY(-6px)}
+  .thumb{width:100%;height:150px;border-radius:12px;overflow:hidden}
+  .thumb img{width:100%;height:100%;object-fit:cover}
+  .title{margin-top:12px;font-weight:800;font-size:1.05rem;color:#f7fbff}
+  .desc{margin-top:10px;color:#b9c3cc;font-size:.95rem}
+
+  .dock{
+    position:fixed;left:50%;bottom:16px;transform:translateX(-50%);
+    width:min(760px,92%);height:72px;
+    background:linear-gradient(180deg,#0e1418,#0c1115);
+    border-radius:20px;display:flex;justify-content:space-around;align-items:center;
+    border:1px solid var(--line);box-shadow:0 18px 48px rgba(0,0,0,.6);z-index:50;
+  }
+  .dock a{display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;color:#9fb0bf;font-size:.72rem}
+  .dock a.active{color:#eaf6ff}
+  .dock svg{width:20px;height:20px}
+</style>
 </head>
 <body>
-  <div class="bg"></div>
-  <div class="particles"></div>
+<div class="bg-auras"></div>
 
-  <header>
-    <h1>Explore</h1>
-    <p>Discover workshops, challenges, and hands-on activities that spark curiosity and build real-world skills.</p>
+<main class="wrap">
+  <header class="hero">
+    <span class="badge">CodeAGS · Kidpreneur</span>
+    <h1>Explore Programs & Workshops</h1>
+    <p>Hands-on labs, mentor sprints, and real-world projects. Pick a track and start building.</p>
   </header>
 
   <section class="grid">
-    <div class="card">
-      <img src="https://img.icons8.com/fluency/96/idea-sharing.png" alt="Workshops"/>
-      <h3>Workshops</h3>
-      <p>Interactive sessions on coding, design, robotics, and entrepreneurship. Learn by building, not just listening.</p>
-    </div>
-    <div class="card">
-      <img src="https://img.icons8.com/color/96/joystick.png" alt="Challenges"/>
-      <h3>Challenges</h3>
-      <p>Hackathons, pitch events, and design sprints to push your creativity and test your ideas under pressure.</p>
-    </div>
-    <div class="card">
-      <img src="https://img.icons8.com/color/96/microscope.png" alt="Innovation Labs"/>
-      <h3>Innovation Labs</h3>
-      <p>Spaces where ideas come alive. From 3D printers to IoT kits, everything you need to prototype bold solutions.</p>
-    </div>
-    <div class="card">
-      <img src="https://img.icons8.com/color/96/handshake.png" alt="Collaboration"/>
-      <h3>Collaboration</h3>
-      <p>Team up with peers across schools. Because some of the best ideas happen when different minds collide.</p>
-    </div>
-    <div class="card">
-      <img src="https://img.icons8.com/fluency/96/online-support.png" alt="Mentorship"/>
-      <h3>Mentorship</h3>
-      <p>Guidance from teachers, entrepreneurs, and tech experts. Learn the shortcuts they wish they knew earlier.</p>
-    </div>
-    <div class="card">
-      <img src="https://img.icons8.com/color/96/earth-planet.png" alt="Showcase"/>
-      <h3>Showcase</h3>
-      <p>Present your projects to the community, industry leaders, and even global platforms. Shine on stage.</p>
-    </div>
+    <article class="program">
+      <div class="thumb"><img src="https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg?auto=compress&cs=tinysrgb&w=600" alt="AI Bootcamp"></div>
+      <div class="title">AI Bootcamp</div>
+      <div class="desc">Build simple models, collect data, and ship an ML-powered demo.</div>
+    </article>
+
+    <article class="program">
+      <div class="thumb"><img src="https://images.pexels.com/photos/356036/pexels-photo-356036.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Green Energy Lab"></div>
+      <div class="title">Green Energy Lab</div>
+      <div class="desc">Prototype solar backpacks, sensors and energy dashboards.</div>
+    </article>
+
+    <article class="program">
+      <div class="thumb"><img src="https://images.pexels.com/photos/256381/pexels-photo-256381.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Robotics Sprint"></div>
+      <div class="title">Robotics Sprint</div>
+      <div class="desc">Microcontrollers, wiring and autonomy — build a working robot.</div>
+    </article>
+
+    <article class="program">
+      <div class="thumb"><img src="https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg?auto=compress&cs=tinysrgb&w=600" alt="App Design"></div>
+      <div class="title">App Design Track</div>
+      <div class="desc">From sketches to hi-fi prototypes with user testing.</div>
+    </article>
+
+    <article class="program">
+      <div class="thumb"><img src="https://images.pexels.com/photos/256301/pexels-photo-256301.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Maker Lab"></div>
+      <div class="title">Maker Lab</div>
+      <div class="desc">3D printing, CNC, and fabrication for tangible prototypes.</div>
+    </article>
+
+    <article class="program">
+      <div class="thumb"><img src="https://images.pexels.com/photos/3184297/pexels-photo-3184297.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Social Innovation"></div>
+      <div class="title">Social Innovation</div>
+      <div class="desc">Community projects around sustainability and accessibility.</div>
+    </article>
   </section>
+</main>
 
-  <div class="dock">
-    <a href="about.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/info.png" alt="About"></a>
-    <a href="index.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/home.png" alt="Explore (active)"></a>
-    <a href="ideas.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/light-on.png" alt="Ideas"></a>
-    <a href="gallery.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/image.png" alt="Gallery"></a>
-    <a href="inspiration.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/rocket.png" alt="Inspiration"></a>
-  </div>
+<nav class="dock">
+  <a href="index.html"><svg viewBox="0 0 24 24"><path fill="#9fb0bf" d="M12 3l9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V10l9-7z"/></svg><span>Home</span></a>
+  <a href="about.html"><svg viewBox="0 0 24 24"><path fill="#9fb0bf" d="M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg><span>About</span></a>
+  <a class="active" href="explore.html"><svg viewBox="0 0 24 24"><path fill="#0ea5ff" d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg><span>Explore</span></a>
+  <a href="ideas.html"><svg viewBox="0 0 24 24"><path fill="#9fb0bf" d="M9 21h6v-1a3 3 0 0 1 3-3h1a8 8 0 1 0-14 0h1a3 3 0 0 1 3 3v1z"/></svg><span>Ideas</span></a>
+  <a href="gallery.html"><svg viewBox="0 0 24 24"><path fill="#9fb0bf" d="M21 19a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7h18v12zM5 5V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v1H5z"/></svg><span>Gallery</span></a>
+</nav>
 
-  <footer>© 2025 CodeAGS · Ashoka Group of Schools</footer>
-
-  <script>
-    // Particles (same as index.html)
-    const particles=document.querySelector('.particles');
-    for(let i=0;i<20;i++){
-      const p=document.createElement('div');
-      p.classList.add('particle');
-      const size=Math.random()*20+10;
-      p.style.width=size+'px';p.style.height=size+'px';
-      p.style.left=Math.random()*100+'%';p.style.top=Math.random()*100+'%';
-      p.style.background=`rgba(255,255,255,${Math.random()*0.12+0.05})`;
-      p.style.borderRadius="50%";p.style.position="absolute";p.style.filter="blur(6px)";
-      p.style.animation=`float ${Math.random()*30+30}s linear infinite`;
-      particles.appendChild(p);
-    }
-
-    // Animate cards
-    anime({
-      targets: '.card',
-      opacity:[0,1],
-      translateY:[40,0],
-      delay:anime.stagger(250,{start:500}),
-      duration:1200,
-      easing:'spring(1, 80, 12, 0)'
-    });
-  </script>
+<script>
+anime({
+  targets: '.program',
+  opacity:[0,1],
+  translateY:[26,0],
+  delay: anime.stagger(140,{start:300}),
+  easing:'easeOutCubic',
+  duration:800
+});
+</script>
 </body>
 </html>
