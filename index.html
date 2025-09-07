@@ -7,106 +7,94 @@
   <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
   <style>
+    /* ========== RESET ========== */
     *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%}
     body{
-      font-family:"SF Pro Display",-apple-system,system-ui,Roboto,sans-serif;
-      color:#fff;
+      font-family:"SF Pro Display",-apple-system,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      background:#0b0f14; /* deep, PC-like */
+      color:#e6e6e6;
       overflow-x:hidden;
-      position:relative;
-      min-height:100vh;
-      background:#000;
     }
 
-    /* Dark animated gradient wallpaper */
-    .bg{
-      position:fixed;
-      top:0;left:0;
-      width:100%;
-      height:100%;
-      z-index:-3;
-      background:radial-gradient(at 20% 30%, rgba(100,210,255,0.2), transparent 60%),
-                 radial-gradient(at 80% 20%, rgba(255,79,165,0.2), transparent 60%),
-                 radial-gradient(at 50% 80%, rgba(255,184,77,0.2), transparent 60%),
-                 #000;
-      background-size:200% 200%;
-      animation:moveGradient 30s ease-in-out infinite alternate;
-    }
-    @keyframes moveGradient {
-      0% { background-position:20% 30%, 80% 20%, 50% 80%; }
-      50% { background-position:40% 40%, 60% 30%, 55% 70%; }
-      100% { background-position:30% 25%, 70% 15%, 45% 85%; }
+    /* ========== THEME TOKENS (PC PALETTE) ========== */
+    :root{
+      --bg:#0b0f14;
+      --panel:#10151c;
+      --panel-2:#0f141a;
+      --muted:#9aa4af;
+      --line:#1c2530;
+      --ring:rgba(14,165,255,.25);
+
+      --blue:#0ea5ff;             /* primary CTA */
+      --blue-2:#3b82f6;
+      --cyan:#22d3ee;
+      --purple:#a78bfa;
+      --pink:#f472b6;
+      --yellow:#fbbf24;
+      --green:#34d399;
     }
 
-    /* Floating particles */
-    .particles{
-      position:fixed;
-      top:0;left:0;
-      width:100%;
-      height:100%;
-      z-index:-2;
-      pointer-events:none;
-      overflow:hidden;
+    /* ========== BACKGROUND AURAS (SUBTLE, NOT NEON) ========== */
+    .bg-auras{
+      position:fixed; inset:0; z-index:-2;
+      background:
+        radial-gradient(800px 500px at 15% 15%, rgba(14,165,255,.10), transparent 60%),
+        radial-gradient(700px 400px at 85% 25%, rgba(167,139,250,.09), transparent 65%),
+        radial-gradient(700px 400px at 50% 85%, rgba(52,211,153,.07), transparent 60%),
+        var(--bg);
+      filter:saturate(110%);
     }
-    .particle{
-      position:absolute;
-      width:20px;
-      height:20px;
-      border-radius:50%;
-      background:rgba(255,255,255,0.08);
-      filter:blur(6px);
-      animation:float 40s linear infinite;
-    }
-    @keyframes float{
-      from{transform:translateY(110vh) scale(0.5);}
-      to{transform:translateY(-10vh) scale(1.2);}
+    .grain{
+      position:fixed; inset:0; z-index:-1; opacity:.06; pointer-events:none;
+      background-image:linear-gradient(transparent 0, rgba(255,255,255,.1) 100%);
+      mix-blend-mode:overlay;
     }
 
-    header{
+    /* ========== LAYOUT ========== */
+    .wrap{max-width:1040px;margin:0 auto;padding:28px 18px 120px}
+
+    header.hero{
+      margin-top:10px; margin-bottom:22px;
       text-align:center;
-      padding:70px 20px 40px;
-      position:relative;
-      z-index:2;
     }
-    header h1{
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:.78rem; color:#cfeaff; background:rgba(14,165,255,.15);
+      border:1px solid rgba(14,165,255,.25); padding:6px 10px; border-radius:999px;
+      box-shadow:0 0 0 8px rgba(14,165,255,.04) inset;
+    }
+    .hero h1{
       font-size:3.8rem;
       font-weight:800;
-      margin-bottom:15px;
+      margin-top:14px;
       background:linear-gradient(90deg,#64d2ff,#ff4fa5);
       -webkit-background-clip:text;
       color:transparent;
     }
-    header p{
-      font-size:1.5rem;
-      color:#ddd;
-      line-height:1.6;
+    .hero p{
+      margin-top:10px; color:var(--muted); font-size:1.05rem; line-height:1.6;
     }
 
-    /* Bigger App grid */
-    .app-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-      gap:40px;
-      padding:40px 25px 140px;
-      max-width:1200px;
-      margin:0 auto;
-      position:relative;
-      z-index:2;
-    }
+    /* ========== PANEL / CARD ========== */
     .app-icon{
-      background:rgba(255,255,255,0.07);
-      border-radius:32px;
-      backdrop-filter:blur(20px);
-      padding:50px 25px;
-      text-align:center;
-      cursor:pointer;
-      transform:translateY(50px);
-      opacity:0;
-      box-shadow:0 14px 30px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05);
-      transition:transform .4s cubic-bezier(.2,.9,.2,1);
+      position:relative;
+      background:linear-gradient(180deg, var(--panel), var(--panel-2));
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:22px;
+      box-shadow:
+        0 18px 40px rgba(0,0,0,.5),
+        0 1px 0 rgba(255,255,255,.03) inset;
+      transform:translateY(28px); opacity:0;
     }
-    .app-icon:hover{
-      transform:translateY(-10px) scale(1.05);
+    .app-icon::after{ /* glow ring */
+      content:""; position:absolute; inset:-1px; border-radius:inherit;
+      pointer-events:none;
+      box-shadow:0 0 0 1px rgba(255,255,255,.02) inset, 0 0 0 10px var(--ring);
+      opacity:.0; transition:opacity .35s ease;
     }
+    .app-icon:hover::after{opacity:.3}
     .app-icon img{
       width:90px;
       height:90px;
@@ -115,119 +103,112 @@
     .app-icon h3{
       font-size:1.7rem;
       margin-bottom:12px;
-      color:#fff;
+      color:#f5f7fb;
       font-weight:700;
     }
     .app-icon p{
-      font-size:1.2rem;
-      color:#bbb;
+      color:#b9c3cc;
+      line-height:1.65;
+      font-size:1.05rem;
     }
-
-    /* iOS dock */
-    .dock{
-      position:fixed;
-      bottom:20px;
-      left:50%;
-      transform:translateX(-50%);
-      width:92%;
-      max-width:700px;
-      height:95px;
-      background:rgba(255,255,255,0.08);
-      backdrop-filter:blur(25px);
-      border-radius:36px;
-      display:flex;
-      justify-content:space-around;
-      align-items:center;
-      box-shadow:0 18px 40px rgba(0,0,0,0.65);
-      z-index:2;
-    }
-    .dock a img{
-      width:54px;
-      height:54px;
-      border-radius:16px;
-      transition:transform .25s;
-    }
-    .dock a img:hover{
-      transform:scale(1.2);
-    }
-
-    footer{
-      text-align:center;
-      padding:50px 20px 140px;
-      font-size:1rem;
-      color:#aaa;
+    .app-grid{
+      display:grid; gap:18px; margin-top:14px;
+      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+      gap:40px;
+      padding:40px 25px 140px;
+      max-width:1200px;
+      margin:0 auto;
       position:relative;
       z-index:2;
     }
 
-    /* Mobile tweaks */
-    @media(max-width:600px){
-      header h1{font-size:2.6rem;}
-      header p{font-size:1.2rem;}
-      .app-icon img{width:70px;height:70px;}
-      .app-icon h3{font-size:1.3rem;}
-      .app-icon p{font-size:1rem;}
-      .dock{height:80px;}
-      .dock a img{width:42px;height:42px;}
+    /* ========== DOCK (bottom nav, rounded) ========== */
+    .dock{
+      position:fixed; left:50%; bottom:16px; transform:translateX(-50%);
+      width:min(760px,92%); height:74px; z-index:50;
+      background:linear-gradient(180deg, #0e141b, #0c1117);
+      border:1px solid var(--line); border-radius:22px;
+      box-shadow:0 18px 48px rgba(0,0,0,.6);
+      display:flex; justify-content:space-around; align-items:center;
     }
+    .dock a{
+      display:flex; flex-direction:column; align-items:center;
+      gap:6px; text-decoration:none;
+      color:#9fb0bf; font-size:.72rem;
+    }
+    .dock a.active{color:#eaf6ff}
+    .dock svg{width:20px;height:20px}
+    .dock img{width:54px; height:54px; border-radius:16px;}
   </style>
 </head>
 <body>
-  <div class="bg"></div>
-  <div class="particles">
-    <!-- Random particles -->
-    <div class="particle" style="left:10%;animation-duration:35s;"></div>
-    <div class="particle" style="left:30%;animation-duration:50s;"></div>
-    <div class="particle" style="left:55%;animation-duration:40s;"></div>
-    <div class="particle" style="left:75%;animation-duration:60s;"></div>
-    <div class="particle" style="left:90%;animation-duration:45s;"></div>
-  </div>
 
-  <header>
+<div class="bg-auras"></div>
+<div class="grain"></div>
+
+<main class="wrap">
+  <header class="hero">
     <h1>Kidpreneur</h1>
-    <p>Think different. Build boldly.<br>Empowering the next generation of creators with CodeAGS & Ashoka Group of Schools.</p>
+    <p>Empowering young minds with the skills and mindset of future innovators.</p>
   </header>
 
   <section class="app-grid">
     <a href="about.html" class="app-icon">
       <img src="https://img.icons8.com/ios-filled/100/ffffff/info.png" alt="About">
       <h3>About</h3>
-      <p>Who we are & why Kidpreneur matters.</p>
+      <p>Discover our mission & values.</p>
     </a>
     <a href="explore.html" class="app-icon">
       <img src="https://img.icons8.com/ios-filled/100/ffffff/compass.png" alt="Explore">
       <h3>Explore</h3>
-      <p>Workshops, challenges, and deep dives.</p>
-    </a>
-    <a href="gallery.html" class="app-icon">
-      <img src="https://img.icons8.com/ios-filled/100/ffffff/image.png" alt="Gallery">
-      <h3>Gallery</h3>
-      <p>Snapshots of innovation in action.</p>
+      <p>Our programs & workshops.</p>
     </a>
     <a href="ideas.html" class="app-icon">
       <img src="https://img.icons8.com/ios-filled/100/ffffff/light-on.png" alt="Ideas">
       <h3>Ideas</h3>
-      <p>Brainstorms that become startups.</p>
+      <p>Share your next big idea with us.</p>
+    </a>
+    <a href="gallery.html" class="app-icon">
+      <img src="https://img.icons8.com/ios-filled/100/ffffff/image.png" alt="Gallery">
+      <h3>Gallery</h3>
+      <p>Showcase of student creations.</p>
     </a>
     <a href="inspiration.html" class="app-icon">
       <img src="https://img.icons8.com/ios-filled/100/ffffff/rocket.png" alt="Inspiration">
       <h3>Inspiration</h3>
-      <p>Stories, mentors, and future icons.</p>
+      <p>Stories of success and innovation.</p>
     </a>
   </section>
+</main>
 
-  <div class="dock">
-    <a href="about.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/info.png" alt="About"></a>
-    <a href="explore.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/compass.png" alt="Explore"></a>
-    <a href="ideas.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/light-on.png" alt="Ideas"></a>
-    <a href="gallery.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/image.png" alt="Gallery"></a>
-    <a href="inspiration.html"><img src="https://img.icons8.com/ios-filled/100/ffffff/rocket.png" alt="Inspiration"></a>
-  </div>
+<nav class="dock">
+  <a class="active" href="index.html">
+    <svg viewBox="0 0 24 24"><path fill="#0ea5ff" d="M12 3l9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V10l9-7z"/></svg>
+    <span>Home</span>
+  </a>
+  <a href="about.html">
+    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+    <span>About</span>
+  </a>
+  <a href="explore.html">
+    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+    <span>Explore</span>
+  </a>
+  <a href="ideas.html">
+    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M9 21h6v-1a3 3 0 0 1 3-3h1a8 8 0 1 0-14 0h1a3 3 0 0 1 3 3v1z"/></svg>
+    <span>Ideas</span>
+  </a>
+  <a href="gallery.html">
+    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm-2 5a2 2 0 1 0 4 0 2 2 0 0 0-4 0zM12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm8 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0z"/></svg>
+    <span>Gallery</span>
+  </a>
+  <a href="inspiration.html">
+    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 1a11 11 0 0 0-9.846 16.59l-1.352 1.353a.5.5 0 0 0 .353.858H8.5V23a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1v-3.2l5.345-5.345A11 11 0 0 0 12 1zm0 2.5a8.5 8.5 0 1 1 0 17 8.5 8.5 0 0 1 0-17zm-1.5 5h3v2h-3v-2zm0 4h3v2h-3v-2z"/></svg>
+    <span>Inspiration</span>
+  </a>
+</nav>
 
-  <footer>© 2025 CodeAGS · Ashoka Group of Schools</footer>
-
-  <script>
-    // Animate grid icons in like iOS spring load
+<script>
     anime({
       targets: '.app-icon',
       opacity:[0,1],
@@ -237,21 +218,11 @@
       easing:'spring(1, 80, 12, 0)'
     });
 
-    // Subtle parallax for header
-    window.addEventListener('scroll', ()=>{
-      const y = window.scrollY * 0.25;
-      document.querySelector('header').style.transform = `translateY(${y}px)`;
+    window.addEventListener('scroll', ()=> {
+        const y = window.scrollY * 0.25;
+        document.querySelector('header').style.transform = `translateY(${y}px)`;
     });
+</script>
 
-    // Randomize particle positions
-    document.querySelectorAll('.particle').forEach(p=>{
-      const size = Math.random()*20+10;
-      p.style.width = size+'px';
-      p.style.height = size+'px';
-      p.style.left = Math.random()*100+'%';
-      p.style.animationDuration = (Math.random()*30+30)+'s';
-      p.style.background = `rgba(255,255,255,${Math.random()*0.12+0.05})`;
-    });
-  </script>
 </body>
 </html>
