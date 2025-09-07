@@ -9,65 +9,182 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 
 <style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{
-    font-family:"SF Pro Display",-apple-system,system-ui,Roboto,sans-serif;
-    background:#0b0f14;color:#e6eef6;
-    -webkit-font-smoothing:antialiased;
-    overflow-x:hidden;
-  }
+    /* ========== RESET ========== */
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      font-family:"SF Pro Display",-apple-system,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      background:#0b0f14; /* deep, PC-like */
+      color:#e6e6e6;
+      overflow-x:hidden;
+    }
 
-  :root{
-    --panel:#10151c; --panel-2:#0f141a;
-    --muted:#9aa4af; --line:#171e26;
-    --blue:#0ea5ff; --blue-2:#3b82f6;
-  }
+    /* ========== THEME TOKENS (PC PALETTE) ========== */
+    :root{
+      --bg:#0b0f14;
+      --panel:#10151c;
+      --panel-2:#0f141a;
+      --muted:#9aa4af;
+      --line:#1c2530;
+      --ring:rgba(14,165,255,.25);
 
-  .bg-auras{
-    position:fixed;inset:0;z-index:-2;
-    background:
-      radial-gradient(800px 500px at 12% 14%, rgba(14,165,255,.08), transparent 45%),
-      radial-gradient(600px 380px at 86% 22%, rgba(167,139,250,.06), transparent 55%),
-      radial-gradient(700px 400px at 50% 84%, rgba(52,211,153,.05), transparent 55%),
-      #0b0f14;
-  }
-  .wrap{max-width:1040px;margin:0 auto;padding:28px 18px 120px}
+      --blue:#0ea5ff;             /* primary CTA */
+      --blue-2:#3b82f6;
+      --cyan:#22d3ee;
+      --purple:#a78bfa;
+      --pink:#f472b6;
+      --yellow:#fbbf24;
+      --green:#34d399;
+    }
 
-  header.hero{margin-bottom:20px}
-  .badge{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;color:#cfeaff;background:rgba(14,165,255,.13);padding:6px 10px;border-radius:999px;border:1px solid rgba(14,165,255,.18)}
-  .hero h1{margin-top:12px;font-size:2rem;font-weight:800;color:#f3f7ff}
-  .hero p{margin-top:10px;color:var(--muted);font-size:1rem;line-height:1.5}
+    /* ========== BACKGROUND AURAS (SUBTLE, NOT NEON) ========== */
+    .bg-auras{
+      position:fixed; inset:0; z-index:-2;
+      background:
+        radial-gradient(800px 500px at 15% 15%, rgba(14,165,255,.10), transparent 60%),
+        radial-gradient(700px 400px at 85% 25%, rgba(167,139,250,.09), transparent 65%),
+        radial-gradient(700px 400px at 50% 85%, rgba(52,211,153,.07), transparent 60%),
+        var(--bg);
+      filter:saturate(110%);
+    }
+    .grain{
+      position:fixed; inset:0; z-index:-1; opacity:.06; pointer-events:none;
+      background-image:linear-gradient(transparent 0, rgba(255,255,255,.1) 100%);
+      mix-blend-mode:overlay;
+    }
 
-  .grid{margin-top:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
-  .program{
-    background:linear-gradient(180deg,var(--panel),var(--panel-2));
-    border:1px solid var(--line);
-    border-radius:18px;
-    padding:14px;
-    box-shadow:0 16px 40px rgba(0,0,0,.55);
-    transform:translateY(26px);opacity:0;
-    transition:transform .25s ease;
-  }
-  .program:hover{transform:translateY(-6px)}
-  .thumb{width:100%;height:150px;border-radius:12px;overflow:hidden}
-  .thumb img{width:100%;height:100%;object-fit:cover}
-  .title{margin-top:12px;font-weight:800;font-size:1.05rem;color:#f7fbff}
-  .desc{margin-top:10px;color:#b9c3cc;font-size:.95rem}
+    /* ========== LAYOUT ========== */
+    .wrap{max-width:1040px;margin:0 auto;padding:28px 18px 120px}
 
-  .dock{
-    position:fixed;left:50%;bottom:16px;transform:translateX(-50%);
-    width:min(760px,92%);height:72px;
-    background:linear-gradient(180deg,#0e1418,#0c1115);
-    border-radius:20px;display:flex;justify-content:space-around;align-items:center;
-    border:1px solid var(--line);box-shadow:0 18px 48px rgba(0,0,0,.6);z-index:50;
-  }
-  .dock a{display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;color:#9fb0bf;font-size:.72rem}
-  .dock a.active{color:#eaf6ff}
-  .dock svg{width:20px;height:20px}
+    header.hero{
+      margin-top:10px; margin-bottom:22px;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:.78rem; color:#cfeaff; background:rgba(14,165,255,.15);
+      border:1px solid rgba(14,165,255,.25); padding:6px 10px; border-radius:999px;
+      box-shadow:0 0 0 8px rgba(14,165,255,.04) inset;
+    }
+    .hero h1{
+      margin-top:14px;
+      font-size:2.1rem; line-height:1.15; font-weight:800;
+      letter-spacing:.2px; color:#f3f7ff;
+      text-shadow:0 1px 0 rgba(255,255,255,.05);
+    }
+    .hero p{
+      margin-top:10px; color:var(--muted); font-size:1.05rem; line-height:1.6;
+    }
+
+    /* ========== CHIPS ROW (like PC quick pills) ========== */
+    .chips{
+      display:flex; gap:10px; flex-wrap:wrap; margin:18px 0 8px;
+    }
+    .chip{
+      --c: var(--blue);
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px; border-radius:999px; border:1px solid rgba(255,255,255,.06);
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      box-shadow:0 6px 18px rgba(0,0,0,.35), 0 0 0 6px rgba(255,255,255,.015) inset;
+      font-weight:600; font-size:.9rem; color:#eaf6ff;
+    }
+    .dot{width:8px;height:8px;border-radius:50%;background:var(--c);box-shadow:0 0 8px var(--c)}
+
+    /* ========== PANEL / CARD ========== */
+    .card{
+      position:relative;
+      background:linear-gradient(180deg, var(--panel), var(--panel-2));
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:22px;
+      box-shadow:
+        0 18px 40px rgba(0,0,0,.5),
+        0 1px 0 rgba(255,255,255,.03) inset;
+      transform:translateY(28px); opacity:0;
+    }
+    .card::after{ /* glow ring */
+      content:""; position:absolute; inset:-1px; border-radius:inherit;
+      pointer-events:none;
+      box-shadow:0 0 0 1px rgba(255,255,255,.02) inset, 0 0 0 10px var(--ring);
+      opacity:.0; transition:opacity .35s ease;
+    }
+    .card:hover::after{opacity:.3}
+
+    .grid{
+      display:grid; gap:18px; margin-top:14px;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    }
+
+    .card h2{font-size:1.28rem; font-weight:800; color:#f5f7fb; margin-bottom:8px}
+    .card p{color:#b9c3cc; line-height:1.65}
+    .card .thumb{width:100%;height:150px;border-radius:12px;overflow:hidden}
+    .card .thumb img{width:100%;height:100%;object-fit:cover}
+
+    /* ========== STATS ========== */
+    .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:14px}
+    .stat{
+      background:linear-gradient(180deg, #0d1218, #0e151c);
+      border:1px solid var(--line); border-radius:18px; padding:14px;
+      display:flex; flex-direction:column; align-items:center; gap:6px;
+    }
+    .stat h3{font-size:1.3rem; font-weight:800; color:#eaf2ff}
+    .stat p{font-size:.8rem; color:#9fb0bf}
+
+    /* ========== STEPS ========== */
+    .steps{display:grid; gap:12px; margin-top:10px}
+    .step{
+      display:flex; gap:12px; align-items:flex-start;
+      background:linear-gradient(180deg, #0e151c, #0d1218);
+      border:1px solid var(--line); border-radius:18px; padding:12px 14px;
+    }
+    .n{
+      width:28px; height:28px; border-radius:8px; flex:0 0 28px;
+      display:grid; place-items:center; font-weight:800; color:#031018;
+      background:linear-gradient(135deg, var(--blue), #7dd3fc);
+      box-shadow:0 8px 18px rgba(14,165,255,.35);
+      transform:translateZ(0);
+    }
+    .step b{color:#e9f3ff}
+
+    /* ========== CTA BUTTONS (blue glow) ========== */
+    .btns{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px}
+    .btn{
+      appearance:none; border:none; border-radius:14px; padding:12px 16px;
+      font-weight:700; cursor:pointer; transition:transform .15s ease, box-shadow .25s ease, background .25s ease;
+    }
+    .btn-primary{
+      color:#031018;
+      background:linear-gradient(180deg, var(--blue), var(--blue-2));
+      box-shadow:0 14px 32px rgba(14,165,255,.35), 0 0 0 1px rgba(255,255,255,.06) inset;
+    }
+    .btn-primary:hover{transform:translateY(-1px); box-shadow:0 18px 40px rgba(14,165,255,.45)}
+    .btn-ghost{
+      color:#c9d4df; background:linear-gradient(180deg, #10161e, #0e141b);
+      border:1px solid var(--line);
+    }
+    .btn-ghost:hover{transform:translateY(-1px)}
+
+    /* ========== DOCK (bottom nav, rounded) ========== */
+    .dock{
+      position:fixed; left:50%; bottom:16px; transform:translateX(-50%);
+      width:min(760px,92%); height:74px; z-index:50;
+      background:linear-gradient(180deg, #0e141b, #0c1117);
+      border:1px solid var(--line); border-radius:22px;
+      box-shadow:0 18px 48px rgba(0,0,0,.6);
+      display:flex; justify-content:space-around; align-items:center;
+    }
+    .dock a{
+      display:flex; flex-direction:column; align-items:center;
+      gap:6px; text-decoration:none;
+      color:#9fb0bf; font-size:.72rem;
+    }
+    .dock a.active{color:#eaf6ff}
+    .dock svg{width:20px;height:20px}
 </style>
 </head>
 <body>
+
 <div class="bg-auras"></div>
+<div class="grain"></div>
 
 <main class="wrap">
   <header class="hero">
@@ -77,61 +194,69 @@
   </header>
 
   <section class="grid">
-    <article class="program">
-      <div class="thumb"><img src="https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg?auto=compress&cs=tinysrgb&w=600" alt="AI Bootcamp"></div>
-      <div class="title">AI Bootcamp</div>
-      <div class="desc">Build simple models, collect data, and ship an ML-powered demo.</div>
+    <article class="card">
+      <div class="thumb"><img src="https://images.pexels.com/photos/5801550/pexels-photo-5801550.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Robotics Lab"></div>
+      <h2>Robotics Lab</h2>
+      <p>Build, program, and test your own robot from scratch. Focus on sensors, AI, and mechanics.</p>
     </article>
 
-    <article class="program">
-      <div class="thumb"><img src="https://images.pexels.com/photos/356036/pexels-photo-356036.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Green Energy Lab"></div>
-      <div class="title">Green Energy Lab</div>
-      <div class="desc">Prototype solar backpacks, sensors and energy dashboards.</div>
+    <article class="card">
+      <div class="thumb"><img src="https://images.pexels.com/photos/5063063/pexels-photo-5063063.jpeg?auto=compress&cs=tinysrgb&w=600" alt="App & Game Dev"></div>
+      <h2>App & Game Dev</h2>
+      <p>Master game engines and mobile platforms. Learn Python, Swift, and C++ to bring your ideas to life.</p>
     </article>
 
-    <article class="program">
-      <div class="thumb"><img src="https://images.pexels.com/photos/256381/pexels-photo-256381.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Robotics Sprint"></div>
-      <div class="title">Robotics Sprint</div>
-      <div class="desc">Microcontrollers, wiring and autonomy — build a working robot.</div>
+    <article class="card">
+      <div class="thumb"><img src="https://images.pexels.com/photos/5926388/pexels-photo-5926388.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Social Innovation"></div>
+      <h2>Social Innovation</h2>
+      <p>Community projects around sustainability and accessibility. Design solutions that matter.</p>
     </article>
 
-    <article class="program">
-      <div class="thumb"><img src="https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg?auto=compress&cs=tinysrgb&w=600" alt="App Design"></div>
-      <div class="title">App Design Track</div>
-      <div class="desc">From sketches to hi-fi prototypes with user testing.</div>
-    </article>
-
-    <article class="program">
-      <div class="thumb"><img src="https://images.pexels.com/photos/256301/pexels-photo-256301.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Maker Lab"></div>
-      <div class="title">Maker Lab</div>
-      <div class="desc">3D printing, CNC, and fabrication for tangible prototypes.</div>
-    </article>
-
-    <article class="program">
+    <article class="card">
       <div class="thumb"><img src="https://images.pexels.com/photos/3184297/pexels-photo-3184297.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Social Innovation"></div>
-      <div class="title">Social Innovation</div>
-      <div class="desc">Community projects around sustainability and accessibility.</div>
+      <h2>Social Innovation</h2>
+      <p>Community projects around sustainability and accessibility. Design solutions that matter.</p>
     </article>
   </section>
 </main>
 
 <nav class="dock">
-  <a href="index.html"><svg viewBox="0 0 24 24"><path fill="#9fb0bf" d="M12 3l9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V10l9-7z"/></svg><span>Home</span></a>
-  <a href="about.html"><svg viewBox="0 0 24 24"><path fill="#9fb0bf" d="M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg><span>About</span></a>
-  <a class="active" href="explore.html"><svg viewBox="0 0 24 24"><path fill="#0ea5ff" d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg><span>Explore</span></a>
-  <a href="ideas.html"><svg viewBox="0 0 24 24"><path fill="#9fb0bf" d="M9 21h6v-1a3 3 0 0 1 3-3h1a8 8 0 1 0-14 0h1a3 3 0 0 1 3 3v1z"/></svg><span>Ideas</span></a>
-  <a href="gallery.html"><svg viewBox="0 0 24 24"><path fill="#9fb0bf" d="M21 19a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7h18v12zM5 5V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v1H5z"/></svg><span>Gallery</span></a>
+  <a href="index.html">
+    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 3l9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V10l9-7z"/></svg>
+    <span>Home</span>
+  </a>
+  <a href="about.html">
+    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+    <span>About</span>
+  </a>
+  <a class="active" href="explore.html">
+    <svg viewBox="0 0 24 24"><path fill="#0ea5ff" d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+    <span>Explore</span>
+  </a>
+  <a href="ideas.html">
+    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M9 21h6v-1a3 3 0 0 1 3-3h1a8 8 0 1 0-14 0h1a3 3 0 0 1 3 3v1z"/></svg>
+    <span>Ideas</span>
+  </a>
+  <a href="gallery.html">
+    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm-2 5a2 2 0 1 0 4 0 2 2 0 0 0-4 0zM12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm8 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0z"/></svg>
+    <span>Gallery</span>
+  </a>
+  <a href="inspiration.html">
+    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 1a11 11 0 0 0-9.846 16.59l-1.352 1.353a.5.5 0 0 0 .353.858H8.5V23a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1v-3.2l5.345-5.345A11 11 0 0 0 12 1zm0 2.5a8.5 8.5 0 1 1 0 17 8.5 8.5 0 0 1 0-17zm-1.5 5h3v2h-3v-2zm0 4h3v2h-3v-2z"/></svg>
+    <span>Inspiration</span>
+  </a>
 </nav>
 
 <script>
-anime({
-  targets: '.program',
-  opacity:[0,1],
-  translateY:[26,0],
-  delay: anime.stagger(140,{start:300}),
-  easing:'easeOutCubic',
-  duration:800
-});
+    anime({
+      targets: '.card',
+      opacity:[0,1],
+      translateY:[60,0],
+      delay:anime.stagger(200,{start:500}),
+      duration:1200,
+      easing:'spring(1,80,12,0)'
+    });
 </script>
+
 </body>
 </html>
