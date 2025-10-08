@@ -6,140 +6,8 @@
   <title>Kidpreneur · CodeAGS</title>
   <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-  <style>
-    /* ========== RESET ========== */
-    *{margin:0;padding:0;box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      font-family:"SF Pro Display",-apple-system,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-      background:#0b0f14; /* deep, PC-like */
-      color:#e6e6e6;
-      overflow-x:hidden;
-    }
+  <link href="/styles.css" rel="stylesheet">
 
-    /* ========== THEME TOKENS (PC PALETTE) ========== */
-    :root{
-      --bg:#0b0f14;
-      --panel:#10151c;
-      --panel-2:#0f141a;
-      --muted:#9aa4af;
-      --line:#1c2530;
-      --ring:rgba(14,165,255,.25);
-
-      --blue:#0ea5ff;             /* primary CTA */
-      --blue-2:#3b82f6;
-      --cyan:#22d3ee;
-      --purple:#a78bfa;
-      --pink:#f472b6;
-      --yellow:#fbbf24;
-      --green:#34d399;
-    }
-
-    /* ========== BACKGROUND AURAS (SUBTLE, NOT NEON) ========== */
-    .bg-auras{
-      position:fixed; inset:0; z-index:-2;
-      background:
-        radial-gradient(800px 500px at 15% 15%, rgba(14,165,255,.10), transparent 60%),
-        radial-gradient(700px 400px at 85% 25%, rgba(167,139,250,.09), transparent 65%),
-        radial-gradient(700px 400px at 50% 85%, rgba(52,211,153,.07), transparent 60%),
-        var(--bg);
-      filter:saturate(110%);
-    }
-    .grain{
-      position:fixed; inset:0; z-index:-1; opacity:.06; pointer-events:none;
-      background-image:linear-gradient(transparent 0, rgba(255,255,255,.1) 100%);
-      mix-blend-mode:overlay;
-    }
-
-    /* ========== LAYOUT ========== */
-    .wrap{max-width:1040px;margin:0 auto;padding:28px 18px 120px}
-
-    header.hero{
-      margin-top:10px; margin-bottom:22px;
-      text-align:center;
-    }
-    .badge{
-      display:inline-flex; align-items:center; gap:8px;
-      font-size:.78rem; color:#cfeaff; background:rgba(14,165,255,.15);
-      border:1px solid rgba(14,165,255,.25); padding:6px 10px; border-radius:999px;
-      box-shadow:0 0 0 8px rgba(14,165,255,.04) inset;
-    }
-    .hero h1{
-      font-size:3.8rem;
-      font-weight:800;
-      margin-top:14px;
-      background:linear-gradient(90deg,#64d2ff,#ff4fa5);
-      -webkit-background-clip:text;
-      color:transparent;
-    }
-    .hero p{
-      margin-top:10px; color:var(--muted); font-size:1.05rem; line-height:1.6;
-    }
-
-    /* ========== PANEL / CARD ========== */
-    .app-icon{
-      position:relative;
-      background:linear-gradient(180deg, var(--panel), var(--panel-2));
-      border:1px solid var(--line);
-      border-radius:22px;
-      padding:22px;
-      box-shadow:
-        0 18px 40px rgba(0,0,0,.5),
-        0 1px 0 rgba(255,255,255,.03) inset;
-      transform:translateY(28px); opacity:0;
-    }
-    .app-icon::after{ /* glow ring */
-      content:""; position:absolute; inset:-1px; border-radius:inherit;
-      pointer-events:none;
-      box-shadow:0 0 0 1px rgba(255,255,255,.02) inset, 0 0 0 10px var(--ring);
-      opacity:.0; transition:opacity .35s ease;
-    }
-    .app-icon:hover::after{opacity:.3}
-    .app-icon img{
-      width:90px;
-      height:90px;
-      margin-bottom:20px;
-    }
-    .app-icon h3{
-      font-size:1.7rem;
-      margin-bottom:12px;
-      color:#f5f7fb;
-      font-weight:700;
-    }
-    .app-icon p{
-      color:#b9c3cc;
-      line-height:1.65;
-      font-size:1.05rem;
-    }
-    .app-grid{
-      display:grid; gap:18px; margin-top:14px;
-      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-      gap:40px;
-      padding:40px 25px 140px;
-      max-width:1200px;
-      margin:0 auto;
-      position:relative;
-      z-index:2;
-    }
-
-    /* ========== DOCK (bottom nav, rounded) ========== */
-    .dock{
-      position:fixed; left:50%; bottom:16px; transform:translateX(-50%);
-      width:min(760px,92%); height:74px; z-index:50;
-      background:linear-gradient(180deg, #0e141b, #0c1117);
-      border:1px solid var(--line); border-radius:22px;
-      box-shadow:0 18px 48px rgba(0,0,0,.6);
-      display:flex; justify-content:space-around; align-items:center;
-    }
-    .dock a{
-      display:flex; flex-direction:column; align-items:center;
-      gap:6px; text-decoration:none;
-      color:#9fb0bf; font-size:.72rem;
-    }
-    .dock a.active{color:#eaf6ff}
-    .dock svg{width:20px;height:20px}
-    .dock img{width:54px; height:54px; border-radius:16px;}
-  </style>
 </head>
 <body>
 
@@ -195,7 +63,35 @@
     <span>Explore</span>
   </a>
   <a href="ideas.html">
-    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M9 21h6v-1a3 3 0 0 1 3-3h1a8 8 0 1 0-14 0h1a3 3 0 0 1 3 3v1z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path fill="currentColor" d="
+          M16.3 21.3
+          c0.4-1.23 1.22-2.36 2.14-3.32
+          1.82-1.91 2.93-4.48 2.93-7.33
+          0-5.89-4.79-10.69-10.69-10.69
+          S0 4.79 0 10.69
+          c0 2.84 1.1 5.42 2.93 7.33
+          0.92 0.96 1.74 2.09 2.14 3.32
+          l10.24 0
+          z
+          M15.99 24
+          l-12 0
+          l0 0.89
+          c0 2.45 1.98 4.43 4.43 4.43
+          l1.77 0
+          c2.45 0 4.43-1.98 4.43-4.43
+          l0-0.89
+          z
+          M10.22 5.33
+          c-2.2 0-4 1.78-4 4
+          0 0.74-0.6 1.33-1.33 1.33
+          s-1.33-0.6-1.33-1.33
+          c0-3.66 2.96-6.67 6.67-6.67
+          0.74 0 1.33 0.6 1.33 1.33
+          s-0.6 1.33-1.33 1.33
+          z
+        "/>
+      </svg>
     <span>Ideas</span>
   </a>
   <a href="gallery.html">
